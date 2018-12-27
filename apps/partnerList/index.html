@@ -1,0 +1,71 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="./css/partnerlist.css">
+  
+  <script type="text/javascript" src="./include/importerapp.js"></script>
+  <script type="text/javascript" src="./include/build_partnerList.js"></script>
+
+</head>
+
+<body>
+<div id="main">
+  <div id="main-nav"></div>
+  <div id="main-title">Synaptic partners</div>
+  <hr>
+  <div id="main-info">
+    <div id="cell-name">Cell Name: --</div>
+    <div id="main-info-body">
+      Notes:
+      <ol>
+	<li>Bracketed Cells (e.g.[PVX]) denotes an inferred process identification (not traced to Cell Body)</li>
+	<li>unk denotes an unkown neurite process identification</li>
+      </ol>
+    </div>
+
+
+  <table class="synapse-table" id="elec">
+    <tr>
+	<th colspan=3 class="rcol">Electrical Partners</th>
+	<th colspan=2 class="lcol header1">Header1</th>
+    </tr>
+    <tr>
+	<th colspan=3 class="rcol">Partner</th>
+	<th colspan=1 class="lcol">#Synapses</th>
+	<th colspan=1 class="lcol">#Sections</th>
+    </tr>
+
+  </table>
+
+<br>
+
+  <table class="synapse-table" id="pre">
+    <tr>
+	<th colspan=3 class="rcol">Cell is presynaptic</th>
+	<th colspan=2 class="lcol header1">Header1</th>
+    </tr>
+    <tr>
+	<th colspan=3 class="rcol">Partner</th>
+	<th colspan=1 class="lcol">#Synapses</th>
+	<th colspan=1 class="lcol">#Sections</th>
+    </tr>
+
+  </table>
+
+<br>
+
+  <table class="synapse-table" id="post">
+    <tr>
+	<th colspan=3 class="rcol">Cell is postsynaptic</th>
+	<th colspan=2 class="lcol header1">Header1</th>
+    </tr>
+    <tr>
+	<th colspan=3 class="rcol">Partner</th>
+	<th colspan=1 class="lcol">#Synapses</th>
+	<th colspan=1 class="lcol">#Sections</th>
+    </tr>
+
+  </table>
+
+</div>
+</body>
+</html>

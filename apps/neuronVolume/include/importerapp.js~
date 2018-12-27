@@ -1,0 +1,314 @@
+ImporterApp = function ()
+{
+    this.viewer = null;
+    this.fileNames = null;
+    this.inGenerate = false;
+    this.dialog = null;
+    this.isMenuGenerated = false;
+    this.menuObj = null;
+    this.meshGroup = null;
+    
+    this.db = 'JSH';
+    this.selectedCell = '';
+    this.validCells = {};
+    this.selectedNeurons = {'neurons':{}};
+    this.GetCellDisplay();
+    console.log(this.selectedNeurons);
+
+};
+
+ImporterApp.prototype.Init = function ()
+{
+    
+    if (!Detector.webgl){
+	var warning = Detector.getWebGLErrorMessage();
+	alert(warning);
+    };
+
+
+    var myThis = this;
+    var top = document.getElementById ('top');
+    var importerButtons = new ImporterButtons (top);
+    importerButtons.AddLogo('Help',function(){myThis.HelpDialog();});
+    importerButtons.AddLogo ('Select neuron', function () { myThis.NeuronSelectorDialog (); });
+	
+    this.dialog = new FloatingDialog ();
+
+    window.addEventListener ('resize', this.Resize.bind (this), false);
+    this.Resize ();
+    
+    var canvas = document.getElementById('meshviewer');
+    this.GenerateMenu();
+    var viewer = new MeshViewer(canvas,
+				{menuObj:this.menuObj,
+				 meshGroup:this.meshGroup},
+				debug=false);
+    this.viewer = viewer;
+
+    var resizeWindow = function(){
+	viewer.resizeDisplayGL();
+    };
+    
+    var render = function(){
+	
+	requestAnimationFrame(render);
+	myThis.viewer.render();
+    };
+
+    window.addEventListener('resize',resizeWindow,false);
+    
+    this.viewer.initGL();
+    this.viewer.resizeDisplayGL();
+
+    render();
+
+};
+
+ImporterApp.prototype.HelpDialog = function()
+{
+    var self = this;
+    var dialogText = [
+	'<div class="importerdialog">',
+	this.HelpButton (),
+	'</div>',
+    ].join ('');
+    this.dialog.Open ({
+	className : 'dialog',
+	title : 'Help',
+	text : dialogText,
+	buttons : [
+    
+	    {
+		text : 'close',
+		callback : function (dialog) {
+		    dialog.Close();
+		    
+		}
+	    }
+	]
+    });
+}
+
+
+ImporterApp.prototype.NeuronSelectorDialog = function()
+{
+    var self = this;
+    var dialogText = [
+	'<div class="selectordialog">',
+	//this.NeuronSelector (),
+	'</div>',
+    ].join ('');
+    this.dialog.Open ({
+	className: 'cell-selector',
+	title : 'Cell Selector',
+	text : dialogText,
+	buttons : [
+    
+	    {
+		text : 'ok',
+		callback : function (dialog) {
+		    var dir = './models/' + self.db;
+		    for (var i in self.selectedNeurons[group]){
+			if (self.selectedNeurons[group][i].visible == 1 && self.selectedNeurons[group][i].plotted == 0){
+			    self.viewer.loadModel(dir,i);
+			    self.selectedNeurons[group][i].plotted = 1;
+			};
+		    };
+	
+		dialog.Close();
+		}
+	    }
+	]
+    });
+
+    
+    var selector = document.getElementsByClassName('selectordialog')[0];
+    for (var group in this.selectedNeurons){
+	this.AddSelectPanel(selector,group);
+    };  
+
+}
+
+ImporterApp.prototype.AddSelectPanel = function(parent,name)
+{
+    var self = this;
+    var header = document.createElement('button');
+    header.className = 'panel-header';
+    header.setAttribute('type','button');
+    header.setAttribute('data-toggle','collapse');
+    header.setAttribute('data-target','#'+name);
+    header.innerHTML = name
+    var panel = document.createElement('div');
+    panel.id = name;
+    panel.className = 'collapse';
+    for (var i in this.selectedNeurons[name]){
+	var div = document.createElement('div');
+	div.className = 'selectCell';
+	div.id = i;
+	div.innerHTML = i;
+	panel.appendChild(div);
+    };
+    parent.appendChild(header);
+    parent.appendChild(panel);
+    
+    $("div#"+name+" > .selectCell").click(function () {
+	self.selectedNeurons[name][this.id].visible = 
+	    (self.selectedNeurons[name][this.id].visible==1)?0:1;
+	$(this).toggleClass("select");
+    });
+
+    for (var i in this.selectedNeurons[name]){
+	if (this.selectedNeurons[name][i].visible==1){
+	    $("div#"+i).toggleClass("select");  
+	};
+    };
+    
+};
+
+ImporterApp.prototype.SetDB = function(_db)
+{
+    this.db = _db;
+}
+
+ImporterApp.prototype.SetCell = function(_cell)
+{
+    this.selectedCell = _cell;
+}
+
+ImporterApp.prototype.HelpButton = function()
+{
+    var HelpText = [
+	'<div class="helptitle">Volumetric viewer</div>',
+	'<div class="helptext">',
+	'A viewer for volumetrically reconstructed ',
+	'<a href="http://wormwiring.org/sex/hermaphrodite.php">neurons</a> in the nerve ring.',
+	'<br><br>',
+	"Click 'Select neuron' button to input neuron volume.",
+	'<br><br>',
+	"Click on 'Meshes' in side panel to list displayed volumes meshes.",
+	'<br><br>',
+	'Click on listed meshes to access color selector.',
+	'<br><br>',
+	'Click on eye icon to change visibility of the volume.',
+	'<br><br>',
+	'Right mouse button rotates volumes.',
+	'<br><br>',
+	'Scroll wheel controls zoom.',
+	'<br><br>',
+	'Left mouse button pans volumes.',
+	'<br><br>',
+	'*Any breaks in volumes are likely due to poor EM alignment.',
+	'<br><br>',
+	'<b>Refresh browser to clear viewer</b>',
+	'</div>'
+    ].join('');
+    return HelpText;
+}
+
+
+ImporterApp.prototype.GetCellDisplay = function()
+{
+    var self = this;
+    var oReq = new XMLHttpRequest();
+    oReq.addEventListener("load",function(){
+	var list = this.responseText.split('\n');
+	for (l of list){
+	    var tmp = l.split(',');
+	    for (_tmp of tmp){
+		self.selectedNeurons.neurons[_tmp] = {visible:0,plotted:0};
+	    };
+	};
+				  
+    });
+    oReq.open("GET","./models/volcells.txt");
+    oReq.send();
+}
+
+
+ImporterApp.prototype.Resize = function ()
+{
+	function SetWidth (elem, value)
+	{
+		elem.width = value;
+		elem.style.width = value + 'px';
+	}
+
+	function SetHeight (elem, value)
+	{
+		elem.height = value;
+		elem.style.height = value + 'px';
+	}
+
+	var top = document.getElementById ('top');
+	var left = document.getElementById ('left');
+	var canvas = document.getElementById ('meshviewer');
+	var height = document.body.clientHeight - top.offsetHeight;
+
+	SetHeight (canvas, 0);
+	SetWidth (canvas, 0);
+
+	SetHeight (left, height);
+
+	SetHeight (canvas, height);
+	SetWidth (canvas, document.body.clientWidth - left.offsetWidth);
+	
+	this.dialog.Resize ();
+};
+
+ImporterApp.prototype.GenerateMenu = function()
+{
+    function AddDefaultGroup (menu, name)
+    {
+	var group = menu.AddGroup (name, {
+	    openCloseButton : {
+		visible : false,
+		open : 'images/opened.png',
+		close : 'images/closed.png',
+		title : 'Show/Hide ' + name
+	    }
+	});
+	return group;
+    };
+
+
+    function AddMesh(importerApp,importerMenu,meshesGroup,mesh)
+    {
+	importerMenu.AddSubItem(meshesGroup,mesh,{
+	    openCloseButton : {
+		visible : false,
+		open : 'images/info.png',
+		close : 'images/info.png',
+		onOpen : function(content,importerApp,mesh){
+		    alert('Mesh: ' + mesh);
+		},
+		title : 'Show/Hide Information',
+		userData : mesh
+	    },
+	    userButton : {
+		visible : true,
+		onCreate : function(image){
+		    image.src = 'images/visible.png';
+		},
+		onclick : function (image,meshIndex){
+		    var visible = false;
+		    image.src = visible ? 'images/visible.png' : 'images/hidden.png';
+		},
+		title : 'Show/Hide Mesh',
+		userData : mesh
+	    }
+	});
+
+    };
+
+    var self = this;
+    var menu = document.getElementById('menu');
+    this.menuObj = new ImporterMenu(menu);
+    this.meshGroup = AddDefaultGroup(this.menuObj,'Meshes');
+
+};
+
+
+
+
+
+

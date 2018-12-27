@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="./css/synapseViewer.css">
+  
+  <script type="text/javascript" src="./include/importerapp.js"></script>
+  <script type="text/javascript" src="./include/build_synapseViewer.js"></script>
+</head>
+
+<body>
+
+<div id="main">
+  <div id="main-nav"></div>
+  <div id="main-title">Synapse viewer</div>
+  <div id="main-help">
+    Select EM section from dropdown. Allow a few seconds for images to load.
+  </div>
+  <div id="main-info">
+    <div class="main-info-left">
+      <div class="info-left">Database:</div><div class="info-right" id="database">---</div>
+      <div class="info-left">Cell:</div> <div class="info-right" id="cell">---</div>
+      <div class="info-left">Synapse ID:</div> <div class="info-right" id="contin">---</div>
+    </div>
+    <div id class="main-info-right">
+      <div class="info-left">Source:</div> <div class="info-right" id="source">---</div>
+      <div class="info-left">Target:</div> <div class="info-right" id="target">---</div>
+      <div class="info-left">#EM sections:</div> <div class="info-right" id="sections">---</div>
+    </div>
+  </div>
+  <div id="main-selector">
+    <div class="selector-left">Select EM sections: <select id="section"></select></div>
+    <div class="selector-right">
+      Zoom level: 
+      <form id="zoomForm">
+      <label><input type="radio" name="zoomMode" value="0" checked="checked">Low</input></label>
+      <label><input type="radio" name="zoomMode" value="1">High</input></label>
+      </form>
+    </div>
+  </div>
+  
+  <div id="canvas"></div>
+
+</div>
+</body>
+</html>

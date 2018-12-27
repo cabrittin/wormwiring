@@ -1,0 +1,28 @@
+
+html, body
+{
+	color : #222222;
+	background : white;
+	font-size : 12px;
+	font-family : Arial, cursive;
+	margin : 0px;
+	padding : 0px;
+	width : 100%;
+	height : 100%;
+	overflow:auto;
+}
+
+
+#frame-container
+{
+    background:#ffffff;
+    max-width:85%;
+    height:100%;
+    width:auto\9;
+}
+
+#frame-viewer
+{
+    width:80%;
+    height:100%;
+}

@@ -1,0 +1,81 @@
+#banner
+{
+	color : #000000;
+	background : #000000;
+	overflow : auto;    
+}
+
+.wwnavbar {
+    overflow: hidden;
+    background: linear-gradient(#B3B3B3,#838282);
+    font-family: Arial, Helvetica, sans-serif;
+    height: 40px;
+    margin: 0px;
+}
+
+.wwnavbar a {
+    float: left;
+    font-size: 14px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.wwnavbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+    background-color: #E82F71;
+    border: solid #888888;
+    border-width: 0px 1px 0px 0px;
+    color: #000000;
+}
+
+
+.dropdown {
+    postion: relative;
+    float: left;
+    display: inline-block;
+}
+
+.dropbtn {
+    cursor: pointer;
+    font-size: 14px;    
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float:none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    top:140px;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #E82F71;
+}
+

@@ -1,0 +1,6 @@
+# robots.txt generated at http://www.mcanerin.com
+User-agent: *
+Disallow: 
+Disallow: /~cbrittin/restricted/
+Disallow: /test/
+Sitemap: http://wormwiring.org/
