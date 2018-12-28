@@ -1,3 +1,4 @@
+
 window.onload = function(){
     new ImporterWW("banner","wwnavbar");
     var p = document.createElement('h3');
@@ -5,12 +6,12 @@ window.onload = function(){
     menu.appendChild(p);
     var oReq = new XMLHttpRequest();
     oReq.addEventListener("load",function(){
-        var list = this.responseText.split('\n');
-        ImporterList(menu,{id:"news",  
-			   elements: list});         
+	var list = this.responseText.split('\n');
+	ImporterList(menu,{id:"news",
+			   elements: list});
     });
-    
-    var newsFile = 'http://wormwiring.org/news/news.txt';
+
+    var newsFile = './configs/news.txt';
     oReq.open("GET",newsFile)
     oReq.send();
 };
