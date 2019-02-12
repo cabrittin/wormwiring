@@ -37,10 +37,6 @@ ww
     └── include
 
 ```
-
-## series/
-Contains pages which provide links to download data.
-
 ## apps/
 Where website applications are stored. 
 
@@ -56,6 +52,9 @@ apps
 
 ## docs/
 Documentation for the website.
+
+## series/
+Contains pages which provide links to download data.
 
 ## pages/
 Contains pages related to the site, e.g. contact development information.
