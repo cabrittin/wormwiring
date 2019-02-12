@@ -6,10 +6,10 @@
 <head>
 
 	<meta http-equiv="content-type" content="text/html;charset=utf-8">
-	<link rel="stylesheet" type="text/css" href="../css/importer.css">
-	<link rel="stylesheet" type="text/css" href="../css/floatingdialog.css">
-	<link rel="stylesheet" type="text/css" href="../../css/ww.css">
-	<link rel="stylesheet" type="text/css" href="../css/cellselector.css">
+	<link rel="stylesheet" type="text/css" href="./ww/site/css/importer.css">
+	<link rel="stylesheet" type="text/css" href="./ww/apps/css/floatingdialog.css">
+	<link rel="stylesheet" type="text/css" href="./ww/site/css//ww.css">
+	<link rel="stylesheet" type="text/css" href="./ww/apps/css/cellselector.css">
 
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -19,28 +19,29 @@
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	<script src="../include/spectrum/spectrum.js"></script>
-	<link rel="stylesheet" href="../include/spectrum/spectrum.css" />
+	<script src="./ww/apps/include/js/spectrum/spectrum.js"></script>
+	<link rel="stylesheet" href="./ww/apps/include/js/spectrum/spectrum.css" />
 
 	<!--<script src="./three/three.min.js"></script>-->
-	<script src="../include/three/Detector.js"></script>
-	<script src="../include/three/three.js"></script>
+	<script src="./ww/apps/include/js/three/Detector.js"></script>
+	<script src="./ww/apps/include/js/three/three.js"></script>
         <!--<script src="./three/OrbitControls.js"></script>-->
         <!--<script src="./three/OBJLoader.js"></script>-->
-        <script src="../include/three/MTLLoader.js"></script>
-	<script src="../include/three/TrackballControls.js"></script>
-	<script src="../include/three/dat.gui.min.js"></script>
+        <script src="./ww/apps/include/js/three/MTLLoader.js"></script>
+	<script src="./ww/apps/include/js/three/TrackballControls.js"></script>
+	<script src="./ww/apps/include/js/three/dat.gui.min.js"></script>
 	
-	<script src="../include/three/LoaderSupport.js"></script>
-	<script src="../include/three/OBJLoader2.js"></script>
-	
-	<script type="text/javascript" src="../include/importers.js"></script>
-	<script type="text/javascript" src="../include/floatingdialog.js"></script>
-	<script type="text/javascript" src="./include/importerviewer.js"></script>
+	<script src="./ww/apps/include/js/three/LoaderSupport.js"></script>
+	<script src="./ww/apps/include/js/three/OBJLoader2.js"></script>
+
+	<script type="text/javascript" src="./ww/site/include/js/importers.js"></script>
+	<script type="text/javascript" src="./ww/site/include/js/importWW.js"></script>	
+	<script type="text/javascript" src="./ww/apps/include/js/wwapps.js"></script>
+	<script type="text/javascript" src="./ww/apps/include/js/floatingdialog.js"></script>
 	<script type="text/javascript" src="./include/meshviewer.js"></script>
 	<script type="text/javascript" src="./include/importerapp.js"></script>
-	<script type="text/javascript" src="../../include/importWW.js"></script>	
-	<script type="text/javascript" src="./include/build_neuronVolume.js"></scrip>
+	
+	<script type="text/javascript" src="./include/build_app.js"></scrip>
 
 	
 	<script>
@@ -53,23 +54,18 @@
 	  ga('send', 'pageview');
 	</script>
 
-	<title>WW Volumetric Viewer</title>
+	<title>WW: Volumetric Viewer</title>
 
 </head>
 
 <body>
   <div id="banner"></div>
-  <div class="wwnavbar">
-  </div> 
-
+  <div class="wwnavbar"></div> 
+  <div id="top"></div>
+  <div id="left">
+    <div id="menu"></div>
   </div>
   
-	<div id="top">
-	</div>
-	<div id="left">
-		<div id="menu"></div>
-	</div>
-	<canvas id="meshviewer" width="0" height="0"></canvas>
 </body>
 
 </html>

@@ -1,91 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	 "http://www.w3.org/TR/html4/strict.dtd">
+
 <html>
+
 <head>
-  <link rel="stylesheet" type="text/css" href="./css/synapselist.css">
+  <title>WW: Synapse List</title>
   
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="./ww/site/css/ww.css">
+  <link rel="stylesheet" type="text/css" href="./ww/apps/css/wwapps.css">
+  <link rel="stylesheet" type="text/css" href="./ww/apps/css/floatingdialog.css">
+  <link rel="stylesheet" type="text/css" href="./ww/apps/css/cellselector.css">
+  <link rel="stylesheet" type="text/css" href="./css/synapseList.css">  
+  
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="./ww/site/include/js/importers.js"></script>
+  <script type="text/javascript" src="./ww/site/include/js/importWW.js"></script>
+  <script type="text/javascript" src="./ww/apps/include/js/wwapps.js"></script>
+  <script type="text/javascript" src="./ww/apps/include/js/floatingdialog.js"></script>
   <script type="text/javascript" src="./include/importerapp.js"></script>
-  <script type="text/javascript" src="./include/build_synapseList.js"></script>
+  <script type="text/javascript" src="./include/build_app.js"></script>
+
  
-  <script id="test" language="javascript" type="text/javascript">	
-    $(document).ready(function() {
-      $('[data-toggle="toggle"]').change(function(){
-         console.log("click");
-         $(this).parents().next('.hide').toggle();
-       });
-    });
-  </script>
 </head>
 
+
 <body>
-<div id="main">
-  <div id="main-nav"></div>
-  <div id="main-title">List of synapses</div>
-  <hr>
-  <div id="main-info">
-    <div id="cell-name">Cell Name: --</div>
-    <div id="main-info-body">
-      Notes:
-      <ol>
-	<li><strong>Click on target cells to expand/collapse synapse list. Synapse IDs linke to EMs.</strong></li>
-	<li>Bracketed Cells (e.g.[PVX]) denotes an inferred process identification (not traced to Cell Body)</li>
-	<li>unk denotes an unkown neurite process identification</li>
-	<li>In synapse lists, the listed order of postsynaptic cells in polyads represents the clockwise order of the cells around the presynaptic density, electron micrographs viewed looking toward the head.  Thus, R9AL>DVF,HOB,PVY represents a synapse that appears like this in the electron micrograph:< </li>
-	<li>A 'nmj_' in front a synapse denotes a neuromuscular junction. </li>
-	<li>Occasionally, synapes do not display properly in the maps. In cases where there is a discrepancy between the maps and this synapse list, this synapse list should be considered correct. </li>
-      </ol>
-      <img src="../php/images/synapseexample.png" width="125"></td>
+  <div id="banner"></div>
+  <div class="wwnavbar"></div> 
+  <div id="container">
+    <div id="top"></div>
+    <div id="left">
+      <div id="menu"></div>
     </div>
+    <div id="main">
+      <div class="outer-div">
+	<div class="title-inner-div">
+	  <span>Synapse list</span>
+	</div>
+      </div>
+      <div class="outer-div">
+	<div class="cell-inner-div">
+	    <div id="cell-name">Cell Name: --</div>
+	</div>
+      </div>
+      <div class="outer-div">
+	<div id="notes">
+	  Notes:
+	  <ol>
+	    <li>
+	      Bracketed Cells (e.g.[PVX]) denotes an inferred process identification (not traced to Cell Body)
+	    </li>
+	    <li>
+	      unk denotes an unkown neurite process identification
+	    </li>
+	    <li>
+	      In synapse lists, the listed order of postsynaptic cells in polyads represents the clockwise order of the cells around the presynaptic density, electron micrographs viewed looking toward the head.  Thus, R9AL>DVF,HOB,PVY represents a synapse that appears like this in the electron micrograph:
+	    </li>
+	    <img src="./images/synapseexample.png" width="125"></td>
+	    <li>
+	      A 'nmj_' in front a synapse denotes a neuromuscular junction.
+	    </li>
+	    <li>
+	      Occasionally, synapes do not display properly in the maps. In cases where there is a discrepancy between the maps and this synapse list, this synapse list should be considered correct.
+	    </li>
+	  </ol>
+	  
 
+	</div>	
+      </div>
+      <div class="outer-div">
+	<table class="synapse-table" id="elec">
+	  <tr>
+	    <th colspan=3 class="rcol">Electrical Partners</th>
+	    <th colspan=3 class="lcol header1">Header1</th>
+	  </tr>
+	  <tr>
+	    <th colspan=3 class="rcol">Partner</th>
+	    <th colspan=1 class="lcol">Synapse Id</th>
+	    <th colspan=1 class="lcol">Min. Section #</th>
+	    <th colspan=1 class="lcol">#Sections</th>
+	  </tr>
+	</table>
 
-  <table class="synapse-table" id="elec">
-    <tr>
-      <th colspan=6><b>Gap junction partners of <?php echo $continName ?> ---- Click on target cell to expand/collapse synapse list</b></th>
-    </tr>
-    <tr>
-	<th colspan=1 class="rcol">Target</th>
-	<th colspan=1 class="lcol">Data series</th>
-	<th colspan=1 class="lcol">Synapse ID</th>
-	<th colspan=1 class="lcol">Section #</th>
-	<th colspan=1 class="lcol">#Synapses</th>
-	<th colspan=1 class="lcol">#Sections</th>      
-    </tr>
+	<br>
 
-  </table>
+	<table class="synapse-table" id="pre">
+	  <tr>
+	    <th colspan=3 class="rcol">Cell is presynaptic</th>
+	    <th colspan=3 class="lcol header1">Header1</th>
+	  </tr>
+	  <tr>
+	    <th colspan=3 class="rcol">Partner</th>
+	    <th colspan=1 class="lcol">Synapse Id</th>
+	    <th colspan=1 class="lcol">Min. Section #</th>
+	    <th colspan=1 class="lcol">#Sections</th>
+	  </tr>
+	</table>
 
-<br>
+	<br>
 
-  <table class="synapse-table" id="pre">
-    <tr>
-      <th colspan=6><b>Chemical synapses where <?php echo $continName ?> is presynaptic ----- Click on target cell to expand/collapse synapse list</b></th>
-    </tr>
-    <tr>
-	<th colspan=1 class="rcol">Target</th>
-	<th colspan=1 class="lcol">Data series</th>
-	<th colspan=1 class="lcol">Synapse ID</th>
-	<th colspan=1 class="lcol">Section #</th>
-	<th colspan=1 class="lcol">#Synapses</th>
-	<th colspan=1 class="lcol">#Sections</th>       
-    </tr>
+	<table class="synapse-table" id="post">
+	  <tr>
+	    <th colspan=3 class="rcol">Cell is postsynaptic</th>
+	    <th colspan=3 class="lcol header1">Header1</th>
+	  </tr>
+	  <tr>
+	    <th colspan=3 class="rcol">Partner</th>
+	    <th colspan=1 class="lcol">Synapse Id</th>
+	    <th colspan=1 class="lcol">Min. Section #</th>
+	    <th colspan=1 class="lcol">#Sections</th>
+	  </tr>
+	</table>
+	
+      </div>
 
-  </table>
-
-<br>
-
-  <table class="synapse-table" id="post">
-    <tr>
-      <th colspan=6><b>Chemical synapses where <?php echo $continName ?> is postsynaptic ----- Click on target cell to expand/collapse synapse list</b></th>
-    </tr>
-    <tr>
-	<th colspan=1 class="rcol">Target</th>
-	<th colspan=1 class="lcol">Data series</th>
-	<th colspan=1 class="lcol">Synapse ID</th>
-	<th colspan=1 class="lcol">Section #</th>
-	<th colspan=1 class="lcol">#Synapses</th>
-	<th colspan=1 class="lcol">#Sections</th>       
-    </tr>
-
-  </table>
-
-</div>
+    </div>
+  </div>
 </body>
+
 </html>

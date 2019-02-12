@@ -1,77 +1,130 @@
-ImporterApp = function (_synapse)
+ImporterApp = function (args,configFile)
 {
-    this.synapse = _synapse;
+    this.args = args;
+    this.configFile = configFile;
+    this.data = null;
 };
 
 
 ImporterApp.prototype.Init = function()
 {
-    var self = this;
-    console.log(self.synapse);
-    
-    var herm = ['N2U','JSH','JSE'];
-    var male = ['n930','n2y']
-
-    var pnav = document.getElementById('main-nav');
-    var pnava = document.createElement('button');
-    pnava.onclick = function(){
-	window.history.back();
-    };
-    pnava.innerHTML = 'Back'
-    pnav.appendChild(pnava);
-
-    var url = '../php/getSynapse.php?contin='+self.synapse.continNum+'&db='+self.synapse.db;
-    var xhttp = new XMLHttpRequest();    
-    xhttp.onreadystatechange = function(){
-	if (this.readyState == 4 && this.status == 200){
-	    var data = JSON.parse(this.responseText);
-	    document.getElementById('database').innerHTML = self.synapse.db;
-	    document.getElementById('cell').innerHTML = self.synapse.neuron;
-	    document.getElementById('contin').innerHTML = self.synapse.continNum;
-	    document.getElementById('source').innerHTML = data.pre;
-	    document.getElementById('target').innerHTML = data.post;
-	    document.getElementById('sections').innerHTML = data.sections;
-	    
-	    var selector = document.getElementById('section');
-	    selector.onchange = function(){
-		var objNum = this.value;
-		var zoom = document.getElementById('zoomForm').elements['zoomMode'].value;
-		self.LoadImage(zoom,objNum);
-	    };
-	    for (var objNum in data.image){
-		var opt = document.createElement('option')
-		opt.value = objNum;
-		opt.innerHTML = data.image[objNum].series + ': ' + 
-		    data.image[objNum].imgNum + ',  ObjectID: ' + objNum;
-		selector.appendChild(opt);
-	    };
-	    var _objNum = Object.keys(data.image)[0]
-	    var zoom = document.getElementById('zoomForm').elements['zoomMode'].value;
-	    self.LoadImage(zoom,_objNum);
-	    //var imgUrl = '../php/loadReducedEM
+    this.cfg = {}
+    var self = this
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+            self.cfg = JSON.parse(this.responseText);
+	    self.GetSynapseInfo(function(){self.SetupPage()});	    
 	}
     };
-    xhttp.open("GET",url,true);
-    xhttp.send();
-    
-    var zoomform = document.getElementById('zoomForm');
-    zoomform.onchange = function(){
-	var selector = document.getElementById('section');
-	var objNum = selector.value;
-	var zoom = this.elements["zoomMode"].value;
-	self.LoadImage(zoom,objNum);
-    };
-
+    xmlhttp.open("GET", this.configFile, true);
+    xmlhttp.send();    
 };
 
+
+ImporterApp.prototype.SetupPage = function()
+{
+
+    var self = this;
+    var top = document.getElementById('top');
+    topbar = new TopBar(top);
+    topbar.addHelp(this.cfg.help);
+    topbar.addButton('Synapse List',
+		     function(){
+			 var url = self.cfg.synapse_list + "?db="+
+			     self.args.db +"&cell="+self.args.neuron;
+			 window.location.href = url;
+		     });
+    topbar.addButton('Partners List',
+		     function(){
+			 var url = self.cfg.partner_list + "?db="+
+			     self.args.db +"&cell="+self.args.neuron;
+			 window.location.href = url;			 
+		     });
+    
+    synInfo = {
+	'id' : 'synapse-info',
+	'title' : 'Synapse info',
+	'info' : {
+	    'db' : ['Database: ',this.args.db],
+	    'cellname': ['Cell: ',this.args.neuron],
+	    'synapseId':['Synapse ID: ',this.args.continNum],
+	    'source' : ['Source: ',this.data.synapse.source],
+	    'target' : ['Target: ', this.data.synapse.target],
+	    'sections' : ['#EM sects.: ', this.data.synapse.sections]
+	}
+	}
+    var side = document.getElementById('menu');
+    sidebar = new SideBar(side);
+    sidebar.addInfoPanel(synInfo);
+
+    var emopts = [];
+    for (var i in this.data.image){
+	emopts.push({"value":this.data.image[i].synobject,
+		     "text":this.data.image[i].imgname +
+		     "(" + this.data.image[i].synobject + ")"});
+    };
+    emSelect = {
+	'id' : 'em-selector',
+	'title': 'Select EM',
+	'label':'EM # (Obj #)',
+	'options':emopts,
+	'onChange':function(){
+	    var obj = document.getElementById('em-selector').value;
+	    var zoom = document.getElementById('zoomForm').elements['zoomMode'].value;
+	    self.LoadImage(zoom,obj);
+	}
+	
+    };
+
+    sidebar.addDropDown(emSelect);
+
+    zoom = {
+	'id':'zoomForm',
+	'title':'Zoom level',
+	'name':'zoomMode',
+	'options': [
+	    {'value':'0','text':'Low','checked':true},
+	    {'value':'1','text':'High','checked':false}
+	],
+	'onChange':function(){
+	    var obj = document.getElementById('em-selector').value;
+	    var zoom = document.getElementById('zoomForm').elements['zoomMode'].value;
+	    self.LoadImage(zoom,obj);
+	}
+    }
+
+    sidebar.addRadioSelect(zoom);
+
+    this.LoadImage(0,emopts[0].value);
+};
+
+
+ImporterApp.prototype.GetSynapseInfo = function(_callback)
+{
+    var self = this;
+
+    var xhttp = new XMLHttpRequest();
+    var url = this.cfg.synapse_loader + '?contin=' +
+	this.args.continNum +'&db='+ this.args.db;
+    xhttp.onreadystatechange = function(){
+	if (this.readyState == 4 && this.status == 200){
+	    self.data = JSON.parse(this.responseText);
+	    _callback();
+	};
+    };
+
+    xhttp.open("GET",url,true);
+    xhttp.send();
+   
+}
 
 ImporterApp.prototype.LoadImage = function(_zoom,_objNum)
 {
     var self = this;
     var objNum = _objNum;
-    var url = '../php/loadSynapseImage.php?contin='+this.synapse.continNum+
-	'&db='+self.synapse.db+'&objNum='+objNum+'&zoom='+_zoom;
-
+    var url = this.cfg.image_loader +'?contin='+this.args.continNum+
+	'&db='+this.args.db+'&objNum='+objNum+'&zoom='+_zoom;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function(){
 	if (this.readyState == 4 && this.status == 200){
@@ -91,4 +144,3 @@ ImporterApp.prototype.LoadImage = function(_zoom,_objNum)
     xhttp.send();
     
 }
-

@@ -14,7 +14,7 @@ MapViewer = function(_canvas,_menu,_debug=false)
     this.CBColor = 0xff0000;
     this.CBWidth = 5;
 
-    this.translate = {x:200,
+    this.translate = {x:-200,
 		      y:0,
 		      z:0};
 
@@ -156,7 +156,6 @@ MapViewer.prototype.clearMaps = function()
 
 MapViewer.prototype.loadMap = function(map)
 {
-    console.log(map);
     var self = this;
     var params = {neuron:map.name,
 		  db:map.series,
@@ -260,7 +259,7 @@ MapViewer.prototype.addSynapse = function(name,synapses,sphereMaterial,synType,p
 	    //params.neuron + '&db=' + params.db +'&continNum='+contin;
 	    var url = '../synapseViewer/?neuron=' + 
 		params.neuron + '&db=' + params.db +'&continNum='+contin;
-	    //THREEx.Linkify(self.domEvents,sphere,url);	    
+	    THREEx.Linkify(self.domEvents,sphere,url);	    
 	    
 	    var _partner = partner.split(',');
 	    for (var j in _partner){

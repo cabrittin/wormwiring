@@ -1,0 +1,57 @@
+	menuObj = scope.menu.menuObj;
+	menuGrp = scope.menu.meshGroup;
+	menuObj.AddSubItem(menuGrp,modelName,
+	   {
+	       openCloseButton : {
+		   visible : false,
+		   open : 'images/info.png',
+		   close: 'images/info.png',
+		   onOpen : function(content,modelName){
+		       var obj = scope.scene.getObjectByName(scope.meshes[modelName].name);
+		       var r = Math.round(255*obj.material.color.r);
+		       var b = Math.round(255*obj.material.color.b);
+		       var g = Math.round(255*obj.material.color.g);
+		       var rgb = b | (g << 8 ) | (r << 16);
+		       var hex = '#' + rgb.toString(16);
+		       colorInput = document.createElement('input');
+		       colorInput.className = 'colorSelector';
+		       colorInput.setAttribute("type","text");
+		       colorInput.setAttribute("value",hex);
+		       while(content.lastChild){
+			   content.removeChild(content.lastChild);
+		       };
+		       content.appendChild(colorInput);
+		       $(".colorSelector").spectrum({
+			   preferredFormat: "rgb",
+			   showInput: true,
+			   move: function(color){
+			       var obj = scope.scene.getObjectByName(scope.meshes[modelName].name);
+			       var rgb = color.toRgb()
+			       obj.material.color.r = rgb.r/255.;
+			       obj.material.color.g = rgb.g/255.;
+			       obj.material.color.b = rgb.b/255.;
+			       
+			   }
+		       });
+		       
+		   },
+		   title : 'Show/Hide Information',
+		   userData: modelName
+	       },
+	       userButton : {
+		   visible : true,
+		   onCreate : function(image){
+		       image.src = 'images/visible.png';
+		   },
+		   onClick: function(image,modelName){
+		       var visible = scope.meshes[modelName].visible;
+		       var obj = scope.scene.getObjectByName(scope.meshes[modelName].name);
+		       image.src = visible ? 'images/hidden.png' : 'images/visible.png';
+		       obj.visible = !visible;
+		       scope.meshes[modelName].visible = !visible;
+		       
+		   },
+		   title : 'Show/Hide mesh',
+		   userData : modelName
+	       }
+	   });

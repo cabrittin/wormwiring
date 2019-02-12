@@ -1,0 +1,141 @@
+/*******************************
+ * App container
+ *******************************/
+
+#container
+{
+    height:100%;
+    width:100%;
+
+}
+
+
+/*****************************
+ * Top bar
+ ****************************/
+
+#top
+{
+	color : #dddddd;
+	background : linear-gradient(#333333, #111111) #222222;
+	overflow : auto;
+}
+
+#logo
+{
+	color : #ffffff;
+	background : linear-gradient(#FF7AA9, #D1004A)  #E82F71;
+	font-size : 14px;
+	text-align : center;
+	text-decoration : none;
+	width : 190px;
+	padding : 5px 0px;
+	margin : 8px;
+	border-radius : 5px;
+	box-shadow: 0px 0px 5px #000000;
+	cursor : pointer;
+	float : left;
+}
+
+span.version
+{
+	margin-left : 5px;
+	font-size : 10px;
+}
+
+img.topbutton
+{
+	width : 25px;
+	height : 25px;
+	margin : 9px 5px 0px 5px;
+	border : 0px;
+	cursor : pointer;
+}
+
+/********************************
+* Left menu
+*********************************/
+
+
+#left
+{
+	color : #222222;
+	background : #cccccc;
+	width : 15%;
+	height : 100%;
+	float : left;
+	overflow : auto;
+}
+
+#menu
+{
+	margin : 5px;
+}
+
+div.menuitem
+{
+	padding : 2px;
+	overflow : auto;
+}
+
+div.menugroup
+{
+	margin-left : 15px;
+	margin-bottom: 12px;
+	margin-top: 8px;
+	font-size: 14px;
+}
+
+div.menutext
+{
+	padding : 2px;
+	margin-left : 3px;
+	float : left;
+}
+
+img.menubutton
+{
+	padding : 2px;
+	float : left;
+	cursor : pointer;
+	border : 0px;
+	display : block;
+}
+
+.menuitem
+{
+    font-size:14px;
+    font-weight:bold;
+}
+
+.submenuitem
+{
+    font-size:14px;
+}
+
+.infoLeft
+{
+    float: left;
+    margin-right: 10px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.infoRight
+{
+ font-size:14px;
+}
+
+/*************************
+ * Main app window
+ *************************/
+
+#main
+{
+    background: #FFFFFF;
+    width : 85%;
+    height : 100%;
+    float : left;
+    overflow: auto;
+    
+}

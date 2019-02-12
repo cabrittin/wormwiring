@@ -1,45 +1,58 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	 "http://www.w3.org/TR/html4/strict.dtd">
+
 <html>
+
 <head>
+  <title>WW: Synapse Viewer</title>
+  
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="./ww/site/css/ww.css">
+  <link rel="stylesheet" type="text/css" href="./ww/apps/css/wwapps.css">
+  <link rel="stylesheet" type="text/css" href="./ww/apps/css/floatingdialog.css">
   <link rel="stylesheet" type="text/css" href="./css/synapseViewer.css">
   
+
+  <!--Required third party -->
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <script type="text/javascript" src="./ww/site/include/js/importers.js"></script>
+  <script type="text/javascript" src="./ww/site/include/js/importWW.js"></script>
+  <script type="text/javascript" src="./ww/apps/include/js/wwapps.js"></script>
+  <script type="text/javascript" src="./ww/apps/include/js/floatingdialog.js"></script>
   <script type="text/javascript" src="./include/importerapp.js"></script>
-  <script type="text/javascript" src="./include/build_synapseViewer.js"></script>
+  <script type="text/javascript" src="./include/build_app.js"></script>
+
 </head>
 
 <body>
-
-<div id="main">
-  <div id="main-nav"></div>
-  <div id="main-title">Synapse viewer</div>
-  <div id="main-help">
-    Select EM section from dropdown. Allow a few seconds for images to load.
-  </div>
-  <div id="main-info">
-    <div class="main-info-left">
-      <div class="info-left">Database:</div><div class="info-right" id="database">---</div>
-      <div class="info-left">Cell:</div> <div class="info-right" id="cell">---</div>
-      <div class="info-left">Synapse ID:</div> <div class="info-right" id="contin">---</div>
+  <div id="banner"></div>
+  <div class="wwnavbar"></div> 
+  <div id="container">
+    <div id="top"></div>
+    <div id="left">
+      <div id="menu"></div>
     </div>
-    <div id class="main-info-right">
-      <div class="info-left">Source:</div> <div class="info-right" id="source">---</div>
-      <div class="info-left">Target:</div> <div class="info-right" id="target">---</div>
-      <div class="info-left">#EM sections:</div> <div class="info-right" id="sections">---</div>
-    </div>
-  </div>
-  <div id="main-selector">
-    <div class="selector-left">Select EM sections: <select id="section"></select></div>
-    <div class="selector-right">
-      Zoom level: 
-      <form id="zoomForm">
-      <label><input type="radio" name="zoomMode" value="0" checked="checked">Low</input></label>
-      <label><input type="radio" name="zoomMode" value="1">High</input></label>
-      </form>
+    <div id="main">
+      <div class="outer-div">
+	<div class="title-inner-div">
+	  <span>Synapse Viewer</span>
+	</div>
+      </div>
+      <div class="outer-div">
+	<div id="notes">
+	  Select EM section from dropdown. Allow a few seconds for images to load.
+	</div>
+      </div>
+      <div class="outer-div">
+	<div id="canvas"></div>
+      </div>      
     </div>
   </div>
-  
-  <div id="canvas"></div>
-
-</div>
 </body>
+
 </html>

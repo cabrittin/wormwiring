@@ -1,28 +1,107 @@
-ImporterApp = function (_partners)
+ImporterApp = function (args,configFile)
 {
-    this.partners = _partners;
-    
-    console.log(this.partners);
+    this.args = args;
+    this.configFile = configFile
+    this.selectedNeurons = {};
 };
 
 
 ImporterApp.prototype.Init = function()
 {
+    this.cfg = {}
+    var self = this
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+            self.cfg = JSON.parse(this.responseText);
+	    self.GetCellDisplay(function(){self.SetupPage()});
+	}
+    };
+    xmlhttp.open("GET", this.configFile, true);
+    xmlhttp.send();    
+};
+
+
+ImporterApp.prototype.SetupPage = function()
+{
     var self = this;
+    var side = document.getElementById('menu');
+    sidebar = new SideBar(side);
+    sidebar.addSeriesSelector(this.cfg);
+
     
-    var url = '../synapseList/?continName='+self.partners.continName +
-	'&series='+self.partners.series; 
-    var pnav = document.getElementById('main-nav');
-    var pnava = document.createElement('a');
-    pnava.href = url;
-    pnava.innerHTML = 'Synapse list'
-    pnav.appendChild(pnava);
+    var top = document.getElementById('top');
+    topbar = new TopBar(top);
+    topbar.addHelp(this.cfg.help);
+    topbar.addCellSelector(this.selectedNeurons,function(){self.CellSelector()});  
+    topbar.addButton('Synapse list',
+		     function(){
+			 var url = self.cfg.synapseList_url
+			 if (self.args.db != null && self.args.cell != null){
+			     url = url + '?db=' + self.args.db + '&cell=' + self.args.cell;
+			 }
+			 window.location.href = url;});
 
-    var cell = document.getElementById('cell-name');
-    cell.innerHTML = 'Cell Name: ' + self.partners.continName;
+    if (this.args.db != null && this.args.cell != null){
+	this.LoadCell(this.args.db,this.args.cell);
+    }
+};
 
-    var url = '../php/getPartnerList.php/?continName='+
-	self.partners.continName+'&series='+self.partners.series;
+ImporterApp.prototype.GetCellDisplay = function(_callback)
+{
+    var self = this;
+    var sex = this.cfg.sex_default;
+    var db = this.cfg.db_default;
+    if (document.getElementById('sex-selector') != null){
+	sex = document.getElementById('sex-selector').value
+    };
+    if (document.getElementById('sex-selector') != null){
+	db = document.getElementById('series-selector').value;    
+    };
+    var xhttp = new XMLHttpRequest();    
+    var url = this.cfg.cell_selector + '?sex=' + sex +'&db='+ db;
+    
+    xhttp.onreadystatechange = function(){
+	if (this.readyState == 4 && this.status == 200){
+	    self.selectedNeurons = JSON.parse(this.responseText);
+	    _callback();
+	};
+    };
+
+    xhttp.open("GET",url,true);
+    xhttp.send();
+   
+};
+
+ImporterApp.prototype.CellSelector = function(){
+    var db = document.getElementById('series-selector').value;
+    for (var group in this.selectedNeurons){
+	for (var i in this.selectedNeurons[group]){
+	    if (this.selectedNeurons[group][i].visible == 1){
+		this.args.db = db;
+		this.args.cell = i;
+		this.RemoveCell();
+		this.LoadCell(db,i);
+		this.selectedNeurons[group][i].visible = 0;
+	    };
+	};
+    };
+    
+    
+}
+
+ImporterApp.prototype.RemoveCell = function()
+{
+    $('.synapse-child').remove();
+}
+
+ImporterApp.prototype.LoadCell = function(_db,_cell)
+{
+    var self = this;
+    var cellElem = document.getElementById('cell-name');
+    cellElem.innerHTML = 'Cell Name: ' + _cell;
+
+    var url = this.cfg.data_loader + "?continName=" + _cell + "&series=" + _db;
     var xhttp = new XMLHttpRequest();    
     xhttp.onreadystatechange = function(){
 	if (this.readyState == 4 && this.status == 200){
@@ -40,6 +119,7 @@ ImporterApp.prototype.Init = function()
 		var tbl = document.getElementById(p);
 		for (var i in data[p]){
 		    var tr = document.createElement('tr');
+		    tr.className = 'synapse-child';
 		    for (var j=0; j<data[p][i].length;j++){
 			var td = document.createElement('td');
 			if ( j == 0){
@@ -60,7 +140,7 @@ ImporterApp.prototype.Init = function()
     };
     xhttp.open("GET",url,true);
     xhttp.send();
-     
-    
-   
-};
+         
+}
+
+

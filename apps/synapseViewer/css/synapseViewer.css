@@ -1,87 +1,46 @@
-#main
+.outer-div
 {
-    width:950px;
-    height:1000px;
-    font-size:16px;
+     padding: 10px;
 }
 
-#main-title
+.title-inner-div
 {
-    padding:10px 10px 10px 10px;
-    width:100%;
-    text-align:center;
-    font-size:34px;
-    font-weight:bold;
+     margin: auto;
+     width: 300px;
+     height: 50px;
+     text-align: center;
+     line-height: 50px;
+ }
+
+
+span {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  font-weight:bold;
+  font-size:24px;
 }
 
-#main-help
+#notes
 {
-    padding:20px 10px 20px 10px;
-    width:100%;
-    text-align:center;
-    font-size:18px;
-}
-
-#main-info
-{
-    font-weight:bold;
-    padding-bottom:20px;
-    padding-left:20px;
-}
-
-.main-info-left
-{
-    width:45%;
-    float: left;
-}
-
-.main-info-right
-{
-    width:%45%;
-}
-
-.info-left
-{
-    float:left;
-    margin-right:10px;
-}
-
-.info-right
-{
-    
-}
-
-.selector-left
-{
-    float:left;
-    width:45%;
-} 
-
-.selector-right
-{
-    widht:45%;
-}
-
-
-#main-selector
-{
-    padding-left: 20px;
-}
-
-#zoomForm
-{
-    display:inline;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    line-height: normal;
+    font-weight:500;
+    font-size:18px;    
 }
 
 #canvas
 {
-    padding-top: 20px;
-    width:100%;
-    height:700px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 800px;
+    
 }
 
-#viewer
-{
-    width:100%;
-    height:100%;
-}
+
+

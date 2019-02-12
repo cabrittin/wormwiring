@@ -1,0 +1,29 @@
+{
+    "sex" : [
+	{"value":"herm", "text":"Hermaphrodite"}
+    ],
+
+ "series":{
+
+     "herm" : [
+	 {"value" : "JSH", "text" : "L4 head (JSH)"},
+	 {"value" : "N2U", "text" : "Adult head (N2U)"}
+     ]
+ },
+  "help":[
+	{
+	 "title" : "Quick start",
+	 "text" : "Volumes for both the L4 and adult nerve ring datasets. Use the Select Neuron button to select the cell. Click cells then click OK Left mouse button rotates the maps. Mouse wheel zooms in/out of the maps. Right mouse button pans the maps. Please note that the adult series is not well aligned. Breaks and distortions in the adult data series are due to poor alignment.",
+	 "video" : "https://youtube.com/embed/aS3ve2MC0dc",
+	 "name" : "help-display"
+        }
+  ],
+
+  "cell_selector": "./ww/configs/celegans/volcells.txt",
+  "info_button" : "./ww/apps/images/info.png",
+  "user_button_visible" : "./ww/apps/images/visible.png",
+  "user_button_hide" : "./ww/apps/images/hidden.png",
+  "open_button" : "./ww/apps/images/opened.png",
+  "close_button" : "./ww/apps/images/closed.png",
+  "models_dir" : "./ww/models/"
+}

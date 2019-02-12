@@ -1,116 +1,153 @@
-ImporterApp = function (_synapses)
+ImporterApp = function (args,configFile)
 {
-    this.synapses = _synapses;
+    this.args = args;
+    this.configFile = configFile
+    this.selectedNeurons = {};
 };
 
 
 ImporterApp.prototype.Init = function()
 {
-    var self = this;
-    
-    var url = '../partnerList/?continName='+self.synapses.continName +
-	'&series='+self.synapses.series; 
-    var pnav = document.getElementById('main-nav');
-    var pnava = document.createElement('a');
-    pnava.href = url;
-    pnava.innerHTML = 'Synaptic Partner list'
-    pnav.appendChild(pnava);
-    
-    var cell = document.getElementById('cell-name');
-    cell.innerHTML = 'Cell Name: ' + self.synapses.continName;
+    this.cfg = {}
+    var self = this
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+            self.cfg = JSON.parse(this.responseText);
+	    self.GetCellDisplay(function(){self.SetupPage()});
+	}
+    };
+    xmlhttp.open("GET", this.configFile, true);
+    xmlhttp.send();    
+};
 
-    var url = '../php/getSynapseList.php/?continName='+
-	self.synapses.continName+'&series='+self.synapses.series;
+
+ImporterApp.prototype.SetupPage = function()
+{
+    var self = this;
+    var side = document.getElementById('menu');
+    sidebar = new SideBar(side);
+    sidebar.addSeriesSelector(this.cfg);
+
+    
+    var top = document.getElementById('top');
+    topbar = new TopBar(top);
+    topbar.addHelp(this.cfg.help);
+    topbar.addCellSelector(this.selectedNeurons,function(){self.CellSelector()});  
+    topbar.addButton('Partner list',
+		     function(){
+			 var url = self.cfg.partnerList_url
+			 if (self.args.db != null && self.args.cell != null){
+			     url = url + '?db=' + self.args.db + '&cell=' + self.args.cell;
+			 }			 
+			 window.location.href = url;});
+
+    if (this.args.db != null && this.args.cell != null){
+	this.LoadCell(this.args.db,this.args.cell);
+    }
+};
+
+ImporterApp.prototype.GetCellDisplay = function(_callback)
+{
+    var self = this;
+    var sex = this.cfg.sex_default;
+    var db = this.cfg.db_default;
+    if (document.getElementById('sex-selector') != null){
+	sex = document.getElementById('sex-selector').value
+    };
+    if (document.getElementById('sex-selector') != null){
+	db = document.getElementById('series-selector').value;    
+    };
+    var xhttp = new XMLHttpRequest();    
+    var url = this.cfg.cell_selector + '?sex=' + sex +'&db='+ db;
+    
+    xhttp.onreadystatechange = function(){
+	if (this.readyState == 4 && this.status == 200){
+	    self.selectedNeurons = JSON.parse(this.responseText);
+	    _callback();
+	};
+    };
+
+    xhttp.open("GET",url,true);
+    xhttp.send();
+   
+};
+
+ImporterApp.prototype.CellSelector = function(){
+    var db = document.getElementById('series-selector').value;
+    for (var group in this.selectedNeurons){
+	for (var i in this.selectedNeurons[group]){
+	    if (this.selectedNeurons[group][i].visible == 1){
+		this.args.db = db;
+		this.args.cell = i;
+		this.RemoveCell();
+		this.LoadCell(db,i);
+		this.selectedNeurons[group][i].visible = 0;
+	    };
+	};
+    };
+    
+    
+}
+
+ImporterApp.prototype.RemoveCell = function()
+{
+    $('.synapse-parent').remove();
+    $('.synapse-child').remove();
+}
+
+
+ImporterApp.prototype.LoadCell = function(_db,_cell)
+{
+    var self = this;
+    var cellElem = document.getElementById('cell-name');
+    cellElem.innerHTML = 'Cell Name: ' + _cell;
+
+    var url = this.cfg.data_loader + "?continName=" + _cell + "&series=" + _db;
     var xhttp = new XMLHttpRequest();    
     xhttp.onreadystatechange = function(){
 	if (this.readyState == 4 && this.status == 200){
 	    var data = JSON.parse(this.responseText);
-	    var ptype = ['elec','pre','post'];
+	    var ptype = ['elec','pre','post']
 	    for (let p of ptype){
 		var tbl = document.getElementById(p);
-		//visible list element
-		for (var i in data[p].list){
-		    var tbody1 = document.createElement('tbody');
-		    //tbody.className = 'labels';
+		for (var i in data[p]){
 		    var tr = document.createElement('tr');
-		    tr.className = 'labels';
-		    for (var j  in data[p].list[i]){
+		    tr.className = 'synapse-child';
+		    for (var j=0; j<data[p][i].length;j++){
 			var td = document.createElement('td');
-			if (j == 0){
-			    td.colSpan = 4;
+			if ( j == 0){
+			    td.colSpan = 3;
 			    td.class = 'rcol';
-			    var label = document.createElement('label');
-			    label.setAttribute('for',data[p].list[i][j]);
-			    label.innerHTML = data[p].list[i][j];
-			    var input = document.createElement('input');
-			    input.name = data[p].list[i][j];
-			    input.type = 'checkbox';
-			    input.id = data[p].list[i][j];
-			    input.setAttribute('data-toggle','toggle');
-			    input.onclick = function(){
-				$(this).parents().next('.hide').toggle();
-			    };
-			    td.appendChild(label);
-			    td.appendChild(input);
 			} else {
-			    td.colsSpan = 1;
+			    td.colSpan = 1;
 			    td.class = 'lcol';
-			    td.innerHTML = data[p].list[i][j];
 			};
-			tr.appendChild(td);
+			if (j == 1){
+			    var a = document.createElement('a');
+			    var href = self.cfg.synapse_viewer + '?neuron=' +
+				_cell + '&db=' + _db + '&series=' + _db +
+				'&continNum=' + data[p][i][j];
+			    a.href = href;
+			    a.innerHTML = data[p][i][j];
+			    td.appendChild(a)
+			} else {
+			    td.innerHTML = data[p][i][j];
+			};
+			tr.appendChild(td)
 		    };
-		    tbody1.appendChild(tr)
-		    tbl.appendChild(tbody1);
-		    
-		    //hidden list element
-		    var tbody2 = document.createElement('tbody');
-		    tbody2.className = 'hide';
-		    tbody2.setAttribute('style','display:none;');
-		    for (var j in data[p].synList[i]){
-			var tr = document.createElement('tr');
-			var td = document.createElement('td');
-			td.className = 'rcol'
-			tr.appendChild(td);
-			var td = document.createElement('td');
-			td.className = 'lcol'
-			td.innerHTML = data[p].synList[i][j][1];
-			tr.appendChild(td);
-			var td = document.createElement('td');
-			td.className = 'lcol'
-			//td.innerHTML = data[p].synList[i][j][3];
-			var a = document.createElement('a');
-			var href = '../synapseViewer/?neuron=' + 
-			    self.synapses.continName + '&db=' + 
-			    data[p].synList[i][j][1] + '&continNum=' +
-			    data[p].synList[i][j][3] + '&series=' +
-			    self.synapses.series;
-			a.href = href;
-			a.innerHTML = data[p].synList[i][j][3];
-			td.appendChild(a);
-			tr.appendChild(td);			
-			var td = document.createElement('td');
-			td.className = 'lcol'
-			td.innerHTML = data[p].synList[i][j][4];
-			tr.appendChild(td);			
-			var td = document.createElement('td');
-			td.className = 'lcol'
-			tr.appendChild(td);
-			var td = document.createElement('td');
-			td.className = 'lcol'
-			td.innerHTML = data[p].synList[i][j][2];
-			tr.appendChild(td);
-			tbody2.appendChild(tr)
-			tbl.appendChild(tbody2);
-		    };
+		    tbl.appendChild(tr);
 		};
 		
+	    };	    
+	    
 		
-	    };
+	    
 	};
     };
     xhttp.open("GET",url,true);
     xhttp.send();
-     
-    
-   
-};
+         
+}
+
+

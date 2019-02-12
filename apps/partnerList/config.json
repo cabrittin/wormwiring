@@ -1,0 +1,35 @@
+{
+    "sex" : [
+	{"value":"herm", "text":"Hermaphrodite"},
+	{"value":"male", "text":"Male"}
+    ],
+
+    "series":{
+	  "herm" : [
+		  {"value" : "Emmons_N2U", "text" : "Adult head (N2U)"},
+		  {"value" : "JSE", "text" : "Adult tail (JSE)"},
+		  {"value" : "N2W", "text" : "Pharynx (N2W)"},
+		  {"value" : "JSH", "text" : "L4 head (JSH)"}
+	  ],
+	  "male" : [
+		  {"value" : "n2y", "text" : "Adult tail (N2Y)"},
+		  {"value" : "n930", "text" : "Adult head (N930)"}
+	  ]
+  },
+
+  "help":[
+	{
+	 "title" : "Quick start",
+	 "text" : "Select sex, then data series and then choose the cell in Select Neuron to display synaptic partners.",
+	 "video" : "https://youtube.com/embed/u5X7I1CBtoo",
+	 "name" : "help-display"
+        }
+  ],
+
+  "cell_selector":"./ww/apps/include/php/selectorCells.php",
+  "synapseList_url": "../synapseList/",
+  "sex_default":"herm",
+  "db_default":"Emmons_N2U",
+  "data_loader" : "./ww/apps/include/php/getPartnerList.php"
+
+}

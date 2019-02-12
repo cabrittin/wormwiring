@@ -1,0 +1,17 @@
+{
+
+  "synapse_loader" : "./ww/apps/include/php/getSynapse.php",
+  "image_loader" : "./ww/apps/include/php/loadSynapseImage.php",
+  "synapse_list": "../synapseList/",
+  "partner_list": "../partnerList/",
+
+  "help":[
+	{
+	 "title" : "Quick start",
+	 "text" : "Select sex, then data series and then choose the cell in Select Neuron to display synaptic partners.",
+	 "video" : "https://youtube.com/embed/u5X7I1CBtoo",
+	 "name" : "help-display"
+        }
+  ]
+
+}

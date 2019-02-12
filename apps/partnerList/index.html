@@ -1,71 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	 "http://www.w3.org/TR/html4/strict.dtd">
+
 <html>
+
 <head>
-  <link rel="stylesheet" type="text/css" href="./css/partnerlist.css">
+  <title>WW: Partner List</title>
   
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="./ww/site/css/ww.css">
+  <link rel="stylesheet" type="text/css" href="./ww/apps/css/wwapps.css">
+  <link rel="stylesheet" type="text/css" href="./ww/apps/css/floatingdialog.css">
+  <link rel="stylesheet" type="text/css" href="./ww/apps/css/cellselector.css">
+  <link rel="stylesheet" type="text/css" href="./css/partnerList.css">  
+  
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <script type="text/javascript" src="./ww/site/include/js/importers.js"></script>
+  <script type="text/javascript" src="./ww/site/include/js/importWW.js"></script>
+  <script type="text/javascript" src="./ww/apps/include/js/wwapps.js"></script>
+  <script type="text/javascript" src="./ww/apps/include/js/floatingdialog.js"></script>
   <script type="text/javascript" src="./include/importerapp.js"></script>
-  <script type="text/javascript" src="./include/build_partnerList.js"></script>
+  <script type="text/javascript" src="./include/build_app.js"></script>
 
 </head>
 
+
 <body>
-<div id="main">
-  <div id="main-nav"></div>
-  <div id="main-title">Synaptic partners</div>
-  <hr>
-  <div id="main-info">
-    <div id="cell-name">Cell Name: --</div>
-    <div id="main-info-body">
-      Notes:
-      <ol>
-	<li>Bracketed Cells (e.g.[PVX]) denotes an inferred process identification (not traced to Cell Body)</li>
-	<li>unk denotes an unkown neurite process identification</li>
-      </ol>
+  <div id="banner"></div>
+  <div class="wwnavbar"></div> 
+  <div id="container">
+    <div id="top"></div>
+    <div id="left">
+      <div id="menu"></div>
     </div>
+    <div id="main">
+      <div class="outer-div">
+	<div class="title-inner-div">
+	  <span>Synapse partner list</span>
+	</div>
+      </div>
+      <div class="outer-div">
+	<div class="cell-inner-div">
+	    <div id="cell-name">Cell Name: --</div>
+	</div>
+      </div>
+      <div class="outer-div">
+	<div id="notes">
+	  Notes:
+	  <ol>
+	    <li>Bracketed Cells (e.g.[PVX]) denotes an inferred process identification (not traced to Cell Body)</li>
+	    <li>unk denotes an unkown neurite process identification</li>
+	  </ol>
+	</div>	
+      </div>
+      <div class="outer-div">
+	<table class="synapse-table" id="elec">
+	  <tr>
+	    <th colspan=3 class="rcol">Electrical Partners</th>
+	    <th colspan=2 class="lcol header1">Header1</th>
+	  </tr>
+	  <tr>
+	    <th colspan=3 class="rcol">Partner</th>
+	    <th colspan=1 class="lcol">#Synapses</th>
+	    <th colspan=1 class="lcol">#Sections</th>
+	  </tr>
+	</table>
 
+	<br>
 
-  <table class="synapse-table" id="elec">
-    <tr>
-	<th colspan=3 class="rcol">Electrical Partners</th>
-	<th colspan=2 class="lcol header1">Header1</th>
-    </tr>
-    <tr>
-	<th colspan=3 class="rcol">Partner</th>
-	<th colspan=1 class="lcol">#Synapses</th>
-	<th colspan=1 class="lcol">#Sections</th>
-    </tr>
+	<table class="synapse-table" id="pre">
+	  <tr>
+	    <th colspan=3 class="rcol">Cell is presynaptic</th>
+	    <th colspan=2 class="lcol header1">Header1</th>
+	  </tr>
+	  <tr>
+	    <th colspan=3 class="rcol">Partner</th>
+	    <th colspan=1 class="lcol">#Synapses</th>
+	    <th colspan=1 class="lcol">#Sections</th>
+	  </tr>
+	</table>
 
-  </table>
+	<br>
 
-<br>
-
-  <table class="synapse-table" id="pre">
-    <tr>
-	<th colspan=3 class="rcol">Cell is presynaptic</th>
-	<th colspan=2 class="lcol header1">Header1</th>
-    </tr>
-    <tr>
-	<th colspan=3 class="rcol">Partner</th>
-	<th colspan=1 class="lcol">#Synapses</th>
-	<th colspan=1 class="lcol">#Sections</th>
-    </tr>
-
-  </table>
-
-<br>
-
-  <table class="synapse-table" id="post">
-    <tr>
-	<th colspan=3 class="rcol">Cell is postsynaptic</th>
-	<th colspan=2 class="lcol header1">Header1</th>
-    </tr>
-    <tr>
-	<th colspan=3 class="rcol">Partner</th>
-	<th colspan=1 class="lcol">#Synapses</th>
-	<th colspan=1 class="lcol">#Sections</th>
-    </tr>
-
-  </table>
-
-</div>
+	<table class="synapse-table" id="post">
+	  <tr>
+	    <th colspan=3 class="rcol">Cell is postsynaptic</th>
+	    <th colspan=2 class="lcol header1">Header1</th>
+	  </tr>
+	  <tr>
+	    <th colspan=3 class="rcol">Partner</th>
+	    <th colspan=1 class="lcol">#Synapses</th>
+	    <th colspan=1 class="lcol">#Sections</th>
+	  </tr>
+	</table>
+	
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>

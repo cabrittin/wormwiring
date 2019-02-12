@@ -13,7 +13,7 @@ if ($sex == 'fullanimal'){
   $series = -1;
 }
 
-$link = '../apps/php/redirectMaps.php?cell='.$cell.'&sex='.$sex;
+$link = '../ww/apps/include/php/redirectMaps.php?cell='.$cell.'&sex='.$sex;
 
 header("Location: $link");
 exit();

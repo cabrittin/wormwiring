@@ -1,0 +1,125 @@
+html, body
+{
+	color : #222222;
+	background : #707070;
+	font-size : 12px;
+	font-family : Arial, cursive;
+	margin : 0px;
+	padding : 0px;
+	width : 100%;
+	height : 100%;
+}
+
+#meshviewer{
+    background-color:#000000;
+}
+
+
+
+
+#left
+{
+	color : #222222;
+	background : #cccccc;
+	width : 200px;
+	height: 100%;
+	float : left;
+	overflow : auto;
+}
+
+#menu
+{
+	margin : 5px;
+}
+
+div.menuitem
+{
+	padding : 2px;
+	overflow : auto;
+}
+
+div.menugroup
+{
+	margin-left : 15px;
+	margin-bottom: 12px;
+	margin-top: 8px;
+	font-size: 14px;
+}
+
+div.menutext
+{
+	padding : 2px;
+	margin-left : 3px;
+	float : left;
+}
+
+img.menubutton
+{
+	padding : 2px;
+	float : left;
+	cursor : pointer;
+	border : 0px;
+	display : block;
+}
+
+div.colorbutton
+{
+	width : 14px;
+	height : 14px;
+	border : 1px solid #222222;
+	float : left;
+}
+
+div.progressbarborder
+{
+	height : 20px;
+	border : 1px solid #222222;
+}
+
+div.progressbarcontent
+{
+	color : #ffffff;
+	background : #279b61;
+	height : 20px;
+}
+
+table.infotable td
+{
+	padding : 1px 5px;
+}
+
+div.importerdialog
+{
+	width : 700px;
+}
+
+canvas
+{
+	display : block;
+}
+
+
+
+a
+{
+	color : #225588;
+	background : transparent;
+	text-decoration : none;
+}
+
+a:hover
+{
+	text-decoration : underline;
+}
+
+
+.menuitem
+{
+    font-size:14px;
+    font-weight:bold;
+}
+
+.submenuitem
+{
+    font-size:14px;
+}
