@@ -2,7 +2,7 @@
 Repository for the connectome project at [wormwiring.org](http://wormwiring.org/).
 
 This site provides data visualization tools for the *C. elegans* research community. 
-The primary focus of the site is the visualization and dissemination of connectomics data, synaptic and volumetric reconstructions from serieal section electron micrographs.
+The primary focus of the site is the visualization and dissemination of connectomics data, synaptic and volumetric reconstructions from serial section electron micrographs.
 **We invite developers to contribute to the project.**
 
 ## Documentation
