@@ -9,8 +9,8 @@ $_iWidth = 600;
 $_iHeight = 600;
 $shiftX = 750;
 $shiftY = 750;
-$RELPATH = "./ww/image_data/";
-$RELPATH="../../../image_data/";
+$RELPATH = "./ww/data/image_data/";
+$RELPATH="../../../data/image_data/";
 $debug = 0;
 $zoom = 0;
 
@@ -18,7 +18,7 @@ if ( $debug > 0){
    $db = 'Emmons_N2U';
    $contin = 3859;
    $objNum = 60861;
-   $RELPATH="../../../image_data/";
+   $RELPATH="../../../data/image_data/";
    $zoom = 0;
 } else {
   $db = $_GET["db"];

@@ -1,3 +1,6 @@
+/**********************
+* Page background
+**********************/
 html, body
 {
 	color : #222222;
@@ -10,6 +13,9 @@ html, body
 	height : 100%;
 }
 
+/***********************
+* Site banner
+***********************/
 #banner
 {
 	color : #000000;
@@ -17,6 +23,9 @@ html, body
 	overflow : auto;    
 }
 
+/**********************
+* Site menu
+**********************/
 .wwnavbar {
     overflow: hidden;
     background: linear-gradient(#B3B3B3,#838282);
@@ -91,3 +100,102 @@ html, body
     background-color: #E82F71;
 }
 
+/*******************************
+ * Container
+ *******************************/
+
+#container
+{
+    height:100%;
+    width:100%;
+
+}
+
+/********************************
+* Left panel
+*********************************/
+
+
+#left
+{
+	color : #222222;
+	background : #cccccc;
+	width : 15%;
+	height : 100%;
+	float : left;
+	overflow : auto;
+}
+
+#menu
+{
+	margin : 5px;
+}
+
+div.menuitem
+{
+	padding : 2px;
+	overflow : auto;
+}
+
+div.menugroup
+{
+	margin-left : 15px;
+	margin-bottom: 12px;
+	margin-top: 8px;
+	font-size: 14px;
+}
+
+div.menutext
+{
+	padding : 2px;
+	margin-left : 3px;
+	float : left;
+}
+
+img.menubutton
+{
+	padding : 2px;
+	float : left;
+	cursor : pointer;
+	border : 0px;
+	display : block;
+}
+
+.menuitem
+{
+    font-size:14px;
+    font-weight:bold;
+}
+
+.submenuitem
+{
+    font-size:14px;
+}
+
+.infoLeft
+{
+    float: left;
+    margin-right: 10px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.infoRight
+{
+ font-size:14px;
+}
+
+
+/*************************
+ * Main app window
+ *************************/
+
+#main
+{
+    background: #FFFFFF;
+    width : 85%;
+    height : 100%;
+    float : left;
+    overflow: auto;
+    
+}

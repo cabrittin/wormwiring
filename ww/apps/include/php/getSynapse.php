@@ -7,7 +7,7 @@ $_iWidth = 600;
 $_iHeight = 600;
 $shift_x = 750;
 $shift_y = 750;
-$RELPATH = "./ww/image_data/";
+$RELPATH = "./ww/data/image_data/";
 
 $debug = 0;
 
