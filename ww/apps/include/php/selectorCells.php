@@ -6,7 +6,7 @@ $debug = 0;
 
 if ( $debug == 1){
    $sex = 'herm';
-   $db = 'N2U';
+   $db = 'Emmons_N2W';
 } else {
   $sex = $_GET["sex"];
   $db = $_GET["db"];
@@ -14,16 +14,16 @@ if ( $debug == 1){
 
 $wafile = './configs/celegans/wa_link.txt';
 
-if ($db == 'N2W'){
-   $neuron_list = './ww/configs/celegans/pharynx_neurons.txt';
-   $muscle_list = './ww/configs/celegans/pharynx_muscle.txt';
+if (in_array($db,array('Emmons_N2W','Emmons_N2T'))){
+   $neuron_list = '../../../configs/celegans/pharynx_neurons.txt';
+   $muscle_list = '../../../configs/celegans/pharynx_muscle.txt';
 } else {
   if ($sex == 'herm'){
     $neuron_list = '../../../configs/celegans/full_herm_neurons.txt';
     $muscle_list = '../../../configs/celegans/full_herm_muscles.txt';     
   } elseif ($sex == 'male'){
-    $neuron_list = './ww/configs/celegans/full_male_neurons.txt';
-    $muscle_list = './ww/configs/celegansfull_male_muscle.txt';      
+    $neuron_list = '../../../configs/celegans/full_male_neurons.txt';
+    $muscle_list = '../../../configs/celegansfull_male_muscle.txt';      
   };  
 }
 
