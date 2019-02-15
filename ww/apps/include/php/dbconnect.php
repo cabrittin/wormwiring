@@ -400,7 +400,9 @@ class DB {
 		    where synapse.idcontin = $synId 
 		    group by synapse.idcontin";
 		   
-		return $this->_return_query_rows_assoc ($sql)[0];
+	 		
+	       $results =  $this->_return_query_rows_assoc ($sql);
+	       return $results[0];
       }
 
 
@@ -421,7 +423,8 @@ class DB {
 	     from contin 
 	     join synapse on synapse.idcontin = contin.idcontin 
 	     where synapse.idcontin = $synId";
-	return $this->_return_query_rows($sql)[0][0];      
+	$result =  $this->_return_query_rows($sql);
+	return $result[0][0];     
       }    
 
       function get_synapse_stats($synId){
@@ -441,12 +444,14 @@ class DB {
 		    join contin as synCont on synCont.idcontin = synObj.idcontin 
 		    where synapse.idcontin = $synId"; 
 
-	return $this->_return_query_rows_assoc($sql)[0];
+	$result =  $this->_return_query_rows_assoc($sql);
+	return $result[0];
       }
 
       function get_synapse_xy($synObj){
       	$sql = "select x,y from object where idobject = $synObj";
-	return $this->_return_query_rows_assoc($sql)[0];
+	$result =  $this->_return_query_rows_assoc($sql);
+	return $result[0];
       	       
       }
 
@@ -456,7 +461,8 @@ class DB {
 	     join synapse on synapse.idpre = object.idobject 
 	     join contin on contin.idcontin=object.idcontin 
 	     where synapse.idsynapse = $synObj";
-	return $this->_return_query_rows_assoc($sql)[0];
+	$result =  $this->_return_query_rows_assoc($sql);
+	return $result[0];
       }
 
       function get_synapse_post_xy($synObj){
@@ -473,7 +479,8 @@ class DB {
 	     from image join object 
 	     on object.idimage = image.idimage 
 	     where object.idobject = $obj";
-	return $this->_return_query_rows_assoc($sql)[0];
+	$result =  $this->_return_query_rows_assoc($sql);
+	return $result[0];
       }
 
       function get_display_trace($continId){
@@ -491,7 +498,8 @@ class DB {
        	    max(x1) xScaleMax, min(y1) yScaleMin, 
 	    max(y1) yScaleMax, min(z1) as zScaleMin, 
 	    max(z1) as zScaleMax  from display";
-        return $this->_return_query_rows_assoc($sql)[0];
+        $result =  $this->_return_query_rows_assoc($sql);
+	return $result[0];
 
       }
 
@@ -527,7 +535,8 @@ class DB {
         $sql = "select x1 as x, y1 as y, z1 as z
 	      from display where idobject1 = $idobject
 	      and idcontin in ($contins)";
-	return $this->_return_query_rows_assoc($sql)[0];
+	$result =  $this->_return_query_rows_assoc($sql);
+	return $result[0];
       }
 }
 
