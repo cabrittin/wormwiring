@@ -27,29 +27,36 @@ ImporterApp.prototype.SetupPage = function()
     var self = this;
     var side = document.getElementById('menu');
     sidebar = new SideBar(side);
-    sidebar.addSeriesSelector(this.cfg);
+    sidebar.addSeriesSelector(this.cfg,function(){self.GetCellDisplay()});
 
     
     var top = document.getElementById('top');
-    topbar = new TopBar(top);
-    topbar.addHelp(this.cfg.help);
-    topbar.addCellSelector(this.selectedNeurons,function(){self.CellSelector()});  
-    topbar.addButton('Synapse list',
-		     function(){
-			 var url = self.cfg.synapseList_url
-			 if (self.args.db != null && self.args.cell != null){
-			     url = url + '?db=' + self.args.db + '&cell=' + self.args.cell;
-			 }
-			 window.location.href = url;});
+    this.topbar = new TopBar(top);
+    this.topbar.addHelp(this.cfg.help);
+    this.topbar.addCellSelector(function(){return self.GetCells()},
+				function(){self.CellSelector()});		
+    this.topbar.addButton('Synapse list',
+			  function(){
+			      var url = self.cfg.synapseList_url
+			      if (self.args.db != null && self.args.cell != null){
+				  url = url + '?db=' + self.args.db + '&cell=' + self.args.cell;
+			      }
+			      window.location.href = url;});
 
     if (this.args.db != null && this.args.cell != null){
 	this.LoadCell(this.args.db,this.args.cell);
     }
 };
 
+ImporterApp.prototype.GetCells = function(){
+    return this.selectedNeurons;
+};
+
 ImporterApp.prototype.GetCellDisplay = function(_callback)
 {
     var self = this;
+    this.selectedNeurons = {};
+    
     var sex = this.cfg.sex_default;
     var db = this.cfg.db_default;
     if (document.getElementById('sex-selector') != null){
@@ -60,11 +67,10 @@ ImporterApp.prototype.GetCellDisplay = function(_callback)
     };
     var xhttp = new XMLHttpRequest();    
     var url = this.cfg.cell_selector + '?sex=' + sex +'&db='+ db;
-    
     xhttp.onreadystatechange = function(){
 	if (this.readyState == 4 && this.status == 200){
 	    self.selectedNeurons = JSON.parse(this.responseText);
-	    _callback();
+	    if (_callback != undefined){_callback()};
 	};
     };
 
@@ -103,6 +109,7 @@ ImporterApp.prototype.LoadCell = function(_db,_cell)
 
     var url = this.cfg.data_loader + "?continName=" + _cell + "&series=" + _db;
     var xhttp = new XMLHttpRequest();    
+    console.log(url);
     xhttp.onreadystatechange = function(){
 	if (this.readyState == 4 && this.status == 200){
 	    var data = JSON.parse(this.responseText);
