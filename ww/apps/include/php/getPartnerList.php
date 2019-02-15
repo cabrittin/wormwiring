@@ -1,11 +1,11 @@
 <?php
 include('./dbaux.php');
 
-$debug = 0;
+$debug =0;
 
 if ( $debug == 1){
-   $series = 'Emmons_N2U';
-   $continName = 'ASHL';
+   $series = 'Emmons_N2Y';
+   $continName = 'R2BR';
 } else {
   $series = $_GET["series"];
   $continName = $_GET["continName"];

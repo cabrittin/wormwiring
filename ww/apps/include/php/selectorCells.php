@@ -5,8 +5,8 @@ include('common.php');
 $debug = 0;
 
 if ( $debug == 1){
-   $sex = 'herm';
-   $db = 'Emmons_N2W';
+   $sex = 'male';
+   $db = 'Emmons_N2Y';
 } else {
   $sex = $_GET["sex"];
   $db = $_GET["db"];
