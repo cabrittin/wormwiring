@@ -3,3 +3,4 @@ logs/
 *.swp
 ww/data/image_data
 ww/data/models
+ww/data/
