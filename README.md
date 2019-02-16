@@ -9,6 +9,7 @@ The primary focus of the site is the visualization and dissemination of connecto
 * [Overview](docs/overview.md)
 * [Databases](docs/databases.md)
 * [Applications](docs/applications.md)
+* [To do](docs/to_do.md)
  
 
 ## Author(s)
