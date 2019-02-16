@@ -7,13 +7,14 @@
  "series":{
  	"herm" : [
 	    {"value": "Emmons_N2U", "text": "Adult head (N2U)"},
-	    {"value": "JSE", "text": "Adult tail (JSE)"},
-	    {"value": "N2W", "text": "Pharynx (N2W)"},
-	    {"value": "JSH", "text": "L4 head (JSH)"}
+	    {"value": "Emmons_JSE", "text": "Adult tail (JSE)"},
+	    {"value": "Emmons_N2W", "text": "Pharynx (N2W)"},
+	    {"value": "Emmons_N2T", "text": "Pharynx (N2T)"},
+	    {"value": "Emmons_JSH", "text": "L4 head (JSH)"}
 	],
 	"male" : [
-	    {"value": "n2y", "text": "Adult tail (N2Y)"},
-	    {"value": "n930", "text": "Adult head (N930)"}
+	    {"value": "Emmons_N2Y", "text": "Adult tail (N2Y)"},
+	    {"value": "Emmons_N930", "text": "Adult head (N930)"}
 	]
  
  },

@@ -33,6 +33,7 @@ MapViewer = function(_canvas,_menu,_debug=false)
 
     this.maxY = 0;
     this.minX = 0;
+    this.ZMAX = 2000;
     this.aspectRation = 1;
     this.sphereWidthSegments = 5;
     this.sphereHeightSegments = 5;
@@ -165,6 +166,7 @@ MapViewer.prototype.loadMap = function(map)
 		  ymax:Math.max(this.maxY,parseInt(map.plotParam.yScaleMax)),
 		  zmid:0.5*(parseInt(map.plotParam.zScaleMin) + parseInt(map.plotParam.zScaleMax)),
 		  zmin:parseInt(map.plotParam.zScaleMin),
+	    	  zmax:parseInt(map.plotParam.zScaleMax),
 		 default:'---',
 		  remarks:false
 		 };
@@ -189,9 +191,12 @@ MapViewer.prototype.loadMap = function(map)
 
     for (var i in map.remarks){
 	var x = parseInt(map.remarks[i][0] - params.xmid)*this.XYScale - 10;
-	var y = (params.ymax - parseInt(map.remarks[i][1]) - params.ymid)*this.XYScale-30 + this.translate.y;
-	var z = parseInt(map.remarks[i][2]) - params.zmin;
-	
+	var y = (params.ymax - parseInt(map.remarks[i][1]) - params.ymid)*this.XYScale-30 + 
+		    this.translate.y;
+	var z = parseInt(map.remarks[i][2]);// - params.zmin;
+	z = this.scaleCoordinate(z,params.zmin,params.zmax,
+		    		0,Math.min(params.zmax,this.ZMAX));
+
 	var params2 = {x:x,y:y,z:z,
 		       color:"rgba(255,255,255,0.95)",
 		       font:"10px Arial",
@@ -211,12 +216,21 @@ MapViewer.prototype.addSkeleton = function(name,skeleton,params)
     for (var i=0; i < skeleton.x.length; i++){
 	var lineGeometry = new THREE.Geometry();
 	var vertArray = lineGeometry.vertices;
-	var x1 = (params.xmin - parseInt(skeleton.x[i][0]) - params.xmid)*this.XYScale + this.translate.x;
-	var x2 = (params.xmin - parseInt(skeleton.x[i][1]) - params.xmid)*this.XYScale + this.translate.x;
-	var y1 = (params.ymax - parseInt(skeleton.y[i][0]) - params.ymid)*this.XYScale + this.translate.y;
-	var y2 = (params.ymax - parseInt(skeleton.y[i][1]) - params.ymid)*this.XYScale + this.translate.y;
-	var z1 = (parseInt(skeleton.z[i][0]) - params.zmin);
-	var z2 = (parseInt(skeleton.z[i][1]) - params.zmin);
+	var x1 = (params.xmin - parseInt(skeleton.x[i][0]) - 
+		params.xmid)*this.XYScale + this.translate.x;
+	var x2 = (params.xmin - parseInt(skeleton.x[i][1]) - 
+		params.xmid)*this.XYScale + this.translate.x;
+	var y1 = (params.ymax - parseInt(skeleton.y[i][0]) - 
+		params.ymid)*this.XYScale + this.translate.y;
+	var y2 = (params.ymax - parseInt(skeleton.y[i][1]) - 
+		params.ymid)*this.XYScale + this.translate.y;
+	var z1 = (parseInt(skeleton.z[i][0]));// - params.zmin);
+	var z2 = (parseInt(skeleton.z[i][1]));// - params.zmin);
+	
+	z1 = this.scaleCoordinate(z1,params.zmin,params.zmax,
+				0,Math.min(params.zmax,this.ZMAX));
+	z2 = this.scaleCoordinate(z2,params.zmin,params.zmax,
+				0,Math.min(params.zmax,this.ZMAX));
 	vertArray.push( new THREE.Vector3(x1,y1,z1),
 			new THREE.Vector3(x2,y2,z2)
 		      );
@@ -233,14 +247,23 @@ MapViewer.prototype.addSkeleton = function(name,skeleton,params)
 
 };
 
+MapViewer.prototype.scaleCoordinate = function(x,xmin,xmax,smin,smax)
+{
+    return  (x - xmin)/(xmax - xmin) * (smax - smin) + smin;
+};
+
 MapViewer.prototype.addSynapse = function(name,synapses,sphereMaterial,synType,params,clickFunc)
 {
     var self = this;
     for (var i=0; i < synapses.length; i++){
 	(function (){
-	    var x = (params.xmin - parseInt(synapses[i][0]) - params.xmid)*self.XYScale + self.translate.x;
-	    var y = (params.ymax - parseInt(synapses[i][1]) - params.ymid)*self.XYScale + self.translate.y;
-	    var z = parseInt(synapses[i][2]) - params.zmin;
+	    var x = (params.xmin - parseInt(synapses[i][0]) - params.xmid)*self.XYScale + 
+			self.translate.x;
+	    var y = (params.ymax - parseInt(synapses[i][1]) - params.ymid)*self.XYScale + 
+			self.translate.y;
+	    var z = parseInt(synapses[i][2]);// - params.zmin;
+	    z = self.scaleCoordinate(z,params.zmin,params.zmax,
+		    		0,Math.min(params.zmax,self.ZMAX));
 	    var _radius = synapses[i][3];
 	    var radius = Math.min(self.SynMax,parseInt(synapses[i][3])*self.SynScale);
 	    var partner = synapses[i][4];
@@ -249,7 +272,8 @@ MapViewer.prototype.addSynapse = function(name,synapses,sphereMaterial,synType,p
 	    var contin = synapses[i][7];
 	    var source = synapses[i][8];
 	    var target = synapses[i][9];
-	    var geometry = new THREE.SphereGeometry(radius,self.sphereWidthSegments,self.sphereHeightSegments);
+	    var geometry = new THREE.SphereGeometry(radius,self.sphereWidthSegments,
+		    				self.sphereHeightSegments);
 	    var sphere = new THREE.Mesh(geometry,sphereMaterial);
 	    sphere.name = contin;
 	    sphere.position.set(x-self.position.x,y-self.position.y,z-self.position.z);

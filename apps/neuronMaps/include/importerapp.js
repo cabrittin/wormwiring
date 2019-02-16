@@ -31,7 +31,7 @@ ImporterApp.prototype.SetupPage = function()
     var self = this;
     var params = {};
     
-    //Check that webgl is installed
+    //Check that webgl is 
     if (!Detector.webgl){
 	var warning = Detector.getWebGLErrorMessage();
 	alert(warning);
@@ -41,7 +41,7 @@ ImporterApp.prototype.SetupPage = function()
     var side = document.getElementById('menu');
     this.sidebar = new SideBar(side);
     this.sidebar.addDefaultGroup('maps','Maps',true);
-    this.sidebar.addSeriesSelector(this.cfg);
+    this.sidebar.addSeriesSelector(this.cfg,function(){self.GetCellDisplay()});
 
     params = {
 	'id' : 'synapse-info',
@@ -86,7 +86,8 @@ ImporterApp.prototype.SetupPage = function()
     var top = document.getElementById('top');
     this.topbar = new TopBar(top);
     this.topbar.addHelp(this.cfg.help);
-    this.topbar.addCellSelector(this.selectedNeurons,function(){self.CellSelector()});  
+    this.topbar.addCellSelector(function(){return self.GetCells()},
+	    			function(){self.CellSelector()});  
     this.topbar.addButton('Clear maps', function () {self.ClearMaps()})
 
     //Window resize
@@ -152,6 +153,11 @@ ImporterApp.prototype.PreloadCell = function()
    
 }
 
+ImporterApp.prototype.GetCells = function(){
+    return this.selectedNeurons;
+};
+
+
 ImporterApp.prototype.GetCellDisplay = function(_callback)
 {
     var self = this;
@@ -168,7 +174,7 @@ ImporterApp.prototype.GetCellDisplay = function(_callback)
     xhttp.onreadystatechange = function(){
 	if (this.readyState == 4 && this.status == 200){
 	    self.selectedNeurons = JSON.parse(this.responseText);
-	    _callback();
+	    if (_callback != undefined){_callback()};
 	};
     };
 
