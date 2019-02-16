@@ -45,14 +45,14 @@ ImporterApp.prototype.SetupPage = function ()
     //Load side menu
     var side = document.getElementById('menu');
     this.sidebar = new SideBar(side);
-    this.sidebar.addSeriesSelector(this.cfg);
+    this.sidebar.addSeriesSelector(this.cfg,function(){});
     this.sidebar.addDefaultGroup('mesh-group','Meshes',true);
 
     //Load top bar
     var top = document.getElementById ('top');
     this.topbar = new TopBar(top);
     this.topbar.addHelp(this.cfg.help);
-    this.topbar.addCellSelector(this.selectedNeurons,
+    this.topbar.addCellSelector(function(){return self.GetCells()},
 				function(){self.CellSelector()});
     this.topbar.addButton('Clear maps', function () {self.ClearMaps()})
     
@@ -85,6 +85,11 @@ ImporterApp.prototype.SetupPage = function ()
 
     render();
 };
+
+ImporterApp.prototype.GetCells = function(){
+    return this.selectedNeurons;
+};
+
 
 ImporterApp.prototype.CellSelector = function(){
     var db = document.getElementById('series-selector').value;

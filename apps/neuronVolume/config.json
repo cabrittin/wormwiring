@@ -25,5 +25,5 @@
   "user_button_hide" : "./ww/apps/images/hidden.png",
   "open_button" : "./ww/apps/images/opened.png",
   "close_button" : "./ww/apps/images/closed.png",
-  "models_dir" : "./ww/models/"
+  "models_dir" : "./ww/data/models/"
 }
