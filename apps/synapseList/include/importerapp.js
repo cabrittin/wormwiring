@@ -27,13 +27,14 @@ ImporterApp.prototype.SetupPage = function()
     var self = this;
     var side = document.getElementById('menu');
     sidebar = new SideBar(side);
-    sidebar.addSeriesSelector(this.cfg);
+    sidebar.addSeriesSelector(this.cfg,function(){self.GetCellDisplay()});
 
     
     var top = document.getElementById('top');
     topbar = new TopBar(top);
     topbar.addHelp(this.cfg.help);
-    topbar.addCellSelector(this.selectedNeurons,function(){self.CellSelector()});  
+    topbar.addCellSelector(function(){return self.GetCells()},
+	    		   function(){self.CellSelector()});  
     topbar.addButton('Partner list',
 		     function(){
 			 var url = self.cfg.partnerList_url
@@ -45,6 +46,10 @@ ImporterApp.prototype.SetupPage = function()
     if (this.args.db != null && this.args.cell != null){
 	this.LoadCell(this.args.db,this.args.cell);
     }
+};
+
+ImporterApp.prototype.GetCells = function(){
+    return this.selectedNeurons;
 };
 
 ImporterApp.prototype.GetCellDisplay = function(_callback)
@@ -63,8 +68,8 @@ ImporterApp.prototype.GetCellDisplay = function(_callback)
     
     xhttp.onreadystatechange = function(){
 	if (this.readyState == 4 && this.status == 200){
-	    self.selectedNeurons = JSON.parse(this.responseText);
-	    _callback();
+	   self.selectedNeurons = JSON.parse(this.responseText);
+	   if (_callback != undefined){_callback()};  
 	};
     };
 
