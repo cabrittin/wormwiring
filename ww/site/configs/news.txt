@@ -1,3 +1,3 @@
-(16/02/2019) We have launched WormWiring v2.1. Website <a href="https://github.com/cabrittin/wormwiring" target="_blank">code</a> is now open to the community. We invide developers to contribute the site.
+(16/02/2019) We have launched WormWiring v2.1. Website <a href="https://github.com/cabrittin/wormwiring" target="_blank">code</a> is now open to the community. We invite developers to contribute the site.
 
 
