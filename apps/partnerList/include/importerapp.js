@@ -109,7 +109,6 @@ ImporterApp.prototype.LoadCell = function(_db,_cell)
 
     var url = this.cfg.data_loader + "?continName=" + _cell + "&series=" + _db;
     var xhttp = new XMLHttpRequest();    
-    console.log(url);
     xhttp.onreadystatechange = function(){
 	if (this.readyState == 4 && this.status == 200){
 	    var data = JSON.parse(this.responseText);

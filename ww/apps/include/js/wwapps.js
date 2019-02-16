@@ -191,7 +191,7 @@ class TopBar {
     selected cells has the format: {'group1':{cell1:{..},cell2:{..}...},'group2':{cell1:{..},cell2:{..}}}
     where cells are split into different groups.
     */
-    cellSelectorDialog(selectedCells,_callback){
+    cellSelectorDialog(_selectedCells,_callback){
 	var self = this;
 	var dialogText = ['<div class="selectordialog"></div>'];
 	this.dialog.Open ({
@@ -208,10 +208,10 @@ class TopBar {
 	    }
 	    ]
 	});
-
+	var selectedCells = _selectedCells();
 	var selector = document.getElementsByClassName('selectordialog')[0];
 	for (var group in selectedCells){
-	    this.addSelectPanel(selector,selectedCells,group);
+	    this.addSelectPanel(selector,_selectedCells,group);
 	};  
     }
 
@@ -223,7 +223,8 @@ class TopBar {
      *
      */
 
-    addSelectPanel(parent,selectedCells,name){
+    addSelectPanel(parent,_selectedCells,name){
+	var selectedCells = _selectedCells();
 	var self = this;
 	var header = document.createElement('button');
 	header.className = 'panel-header';
@@ -311,7 +312,7 @@ class SideBar {
      *  "male" : [ { "value" : database name, "text" : displayed text}, ....]
      * }
      */
-    addSeriesSelector(params){
+    addSeriesSelector(params,_callback){
 	//Add menu group
 	this.addDefaultGroup('series-selector','Series selector',true)
 
@@ -330,7 +331,7 @@ class SideBar {
 		    opt.innerHTML = params.series[sex][i].text;
 		    series.appendChild(opt);
 		};
-		//self.SetCellSelector();
+		_callback();
 	    },
 	    id : 'sex-selector'
 	});
@@ -339,7 +340,7 @@ class SideBar {
 	this.menuObj.AddSelector(this.menuGroup['series-selector'],'Series',{
 	    options: params.series[Object.keys(params.series)[0]],
 	    onChange:function(){
-		//self.SetCellSelector();
+		_callback();
 	    },
 	    id : 'series-selector'
 	});	
