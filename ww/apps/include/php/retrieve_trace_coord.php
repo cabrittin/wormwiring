@@ -91,5 +91,5 @@ $nt->load_map_params($data);
 
 $data = $nt->compile_data();
 if ($debug==0) echo json_encode($data);
-//if ($debug==1) print_r($data);
+if ($debug==1) print_r($data);
 ?>

@@ -22,4 +22,4 @@ $data = array(
 
 
 if ($debug == 0) echo json_encode($data);
-if ($debug == 1) print_r($data['elec']);
+if ($debug == 1) print_r($data);

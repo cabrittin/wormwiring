@@ -111,27 +111,40 @@ function get_partner_lists($db,$cell,$ptype)
 	  $results[] = array($partner,$row[$idx_1],$row[$idx_2]);
 	}	
 	
-	$_db->con->close();
-	return $results;
-}
+	$_db->con->close(); return $results; } 
+
 
 function get_synapse_list($db,$cell,$ptype)
 {
 	$_db = new DB();
 	$_db->connect($db);
-	$idx_1 = 1;
-	$idx_2 = 2;
-	$idx_3 = 3;
 	$cellIds = "'".implode("','",$_db->cell_objects($cell))."'";
 	if ($ptype == "elec"){
-	  $partners = $_db->get_gap_junction_synapses($cellIds);
+		$synIds = "'".implode("','",$_db->get_gap_junction_idcontins($cellIds))."'";	
+		$syn = $_db->get_synapse_batch($synIds);
+		$partners = format_synapse($syn,"|-|");
 	} elseif ($ptype == "pre") {
-	  $partners = $_db->get_pre_chemical_synapses($cellIds);
+		$synIds = "'".implode("','",$_db->get_pre_chemical_idcontins($cellIds))."'";	
+		$syn = $_db->get_synapse_batch($synIds);
+		$partners = format_synapse($syn,"->");
 	} elseif ($ptype == "post") {
-	  $partners = $_db->get_post_chemical_synapses($cellIds);
-        };
+		$synIds = "'".implode("','",$_db->get_post_chemical_idcontins($cellIds))."'";	
+		$syn = $_db->get_synapse_batch($synIds);
+		$partners = format_synapse($syn,"->");
+	};
 
 	$_db->con->close();
+	return $partners;
+}
+
+
+function format_synapse($syn,$symbol){
+	$partners = array();
+	foreach ($syn as $v){
+		$tmp = array($v['pre'].$symbol.$v['post'],
+			$v['synId'],$v['sectNum1'],$v['sects']);
+		$partners[] = $tmp;
+	}
 	return $partners;
 }
 

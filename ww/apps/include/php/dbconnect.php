@@ -206,53 +206,58 @@ class DB {
       }
 
 
-      function get_gap_junction_synapses($cellIds){
-      	       $sql = "select concat_ws('|-|', preCont.continname,postCont.continname),
-		    synapse.idcontin as synId, 
-		    min(image.sectionnumber) as sectnum, 
-		    count(distinct(synapse.idsynapse)) as sects 
-		    from synapse 
-		    join object as preObj on preObj.idobject = synapse.idpre 
-		    join contin as preCont on preCont.idcontin = preObj.idcontin 
-		    join object as postObj on postObj.idobject = synapse.idpost 
-		    join contin as postCont on postCont.idcontin = postObj.idcontin 
-		    join object as synObj on synObj.idobject = synapse.idsynapse 
-		    join image on image.idimage = synObj.idimage 
-		    join contin as synCont on synCont.idcontin = synObj.idcontin 
-		    where (
-		    	  synapse.idpre in ($cellIds) or
-			  synapse.idpost in ($cellIds)
-			  )			  
-		    and synCont.type = 'electrical' 
-		    group by synId order by sectnum asc";
-	       
-	       return $this->_return_query_rows($sql);
+
+      function get_gap_junction_idcontins($cellIds){
+	$sql = "select synapse.idcontin as idcontin from synapse 
+		join contin on synapse.idcontin = contin.idcontin
+		where 
+		(
+			idpre in ($cellIds) or
+			idpost in ($cellIds)
+		)
+		and contin.type = 'electrical'";
+
+	$rows = array();
+        if ($this->result = $this->con->query($sql)){
+          while($row = $this->result->fetch_assoc()){
+                     $rows[] = $row['idcontin'];
+          }
+        }
+        $this->result->free();
+        return $rows;
+
       }
 
-      function get_pre_display_synapses($cellIds,$type){
-      	       $sql = "select preCont.continname as pre, postCont.continname as post,
-		    synapse.idcontin as synId,
-		    synObj.x as x, synObj.y as y, min(image.sectionnumber) as z,
-		    min(image.sectionnumber) as sectNum1,
-		    max(image.sectionnumber) as sectNum2, 
-		    count(distinct(synapse.idsynapse)) as sects 
-		    from synapse 
-		    join object as preObj on preObj.idobject = synapse.idpre 
-		    join contin as preCont on preCont.idcontin = preObj.idcontin 
-		    join object as postObj on postObj.idobject = synapse.idpost 
-		    join contin as postCont on postCont.idcontin = postObj.idcontin 
-		    join object as synObj on synObj.idobject = synapse.idsynapse 
-		    join image on image.idimage = synObj.idimage 
-		    join contin as synCont on synCont.idcontin = synObj.idcontin 
-		    where (
-		    	  synapse.idpre in ($cellIds) or
-			  synapse.idpost in ($cellIds)
-			  )			  
-		    and synCont.type = 'electrical' 
-		    group by synId order by sectnum1 asc";
+      function get_pre_chemical_idcontins($cellIds){
+	$sql = "select synapse.idcontin as idcontin from synapse 
+		join contin on synapse.idcontin = contin.idcontin
+		where idpre in ($cellIds) 
+		and contin.type = 'chemical'";
 
+	$rows = array();
+        if ($this->result = $this->con->query($sql)){
+          while($row = $this->result->fetch_assoc()){
+                     $rows[] = $row['idcontin'];
+          }
+        }
+        $this->result->free();
+        return $rows;
+      }
 
-	       return $this->_return_query_rows_assoc($sql);
+     function get_post_chemical_idcontins($cellIds){
+	$sql = "select synapse.idcontin as idcontin from synapse 
+		join contin on synapse.idcontin = contin.idcontin
+		where idpost in ($cellIds) 
+		and contin.type = 'chemical'";
+
+	$rows = array();
+        if ($this->result = $this->con->query($sql)){
+          while($row = $this->result->fetch_assoc()){
+                     $rows[] = $row['idcontin'];
+          }
+        }
+        $this->result->free();
+        return $rows;
       }
 
 
@@ -428,24 +433,30 @@ class DB {
       }    
 
       function get_synapse_stats($synId){
-       	       $sql = "select preCont.continname as pre, 
-	       	    group_concat(distinct(postCont.continname) separator ',') as post,
-		    synapse.idcontin as synId, 
-		    min(image.sectionnumber) as sectNum1,
-		    max(image.sectionnumber) as sectNum2, 
-		    count(distinct(synapse.idsynapse)) as sects 
-		    from synapse 
-		    join object as preObj on preObj.idobject = synapse.idpre 
-		    join contin as preCont on preCont.idcontin = preObj.idcontin 
-		    join object as postObj on postObj.idobject = synapse.idpost 
-		    join contin as postCont on postCont.idcontin = postObj.idcontin 
-		    join object as synObj on synObj.idobject = synapse.idsynapse 
-		    join image on image.idimage = synObj.idimage 
-		    join contin as synCont on synCont.idcontin = synObj.idcontin 
-		    where synapse.idcontin = $synId"; 
-
+	      $sql = "select pre as pre, 
+		      post as post,
+		      idcontin as synId,
+		      sectNum1 as sectNum1,
+		      sectNum2 as sectNum2,
+		      sects as sects
+		      from synapse_format 
+		      where idcontin = $synId";
 	$result =  $this->_return_query_rows_assoc($sql);
 	return $result[0];
+      }
+
+      function get_synapse_batch($synId){
+	      $sql = "select pre as pre, 
+		      post as post,
+		      idcontin as synId,
+		      sectNum1 as sectNum1,
+		      sectNum2 as sectNum2,
+		      sects as sects
+		      from synapse_format 
+		      where idcontin in ($synId)
+		      order by sects desc";
+	$result =  $this->_return_query_rows_assoc($sql);
+	return $result;
       }
 
       function get_synapse_xy($synObj){
