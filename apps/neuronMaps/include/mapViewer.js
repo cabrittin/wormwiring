@@ -283,7 +283,7 @@ MapViewer.prototype.addSynapse = function(name,synapses,sphereMaterial,synType,p
 	    //params.neuron + '&db=' + params.db +'&continNum='+contin;
 	    var url = '../synapseViewer/?neuron=' + 
 		params.neuron + '&db=' + params.db +'&continNum='+contin;
-	    THREEx.Linkify(self.domEvents,sphere,url);	    
+	    //THREEx.Linkify(self.domEvents,sphere,url);	    
 	    
 	    var _partner = partner.split(',');
 	    for (var j in _partner){
