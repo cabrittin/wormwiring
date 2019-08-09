@@ -98,7 +98,9 @@ ImporterApp.prototype.SetupPage = function()
     var canvas = document.getElementById('meshviewer');
     var viewer = new MapViewer(canvas,
 			       {menuObj:this.menuObj,
-				meshGroup:this.menuGroup['mesh-group']},
+				meshGroup:this.menuGroup['mesh-group'],
+	    			synClick:this.SynapseViewer,
+			        cfg:this.cfg},
 			       debug=false);
     this.viewer = viewer;
    
@@ -399,6 +401,20 @@ ImporterApp.prototype.SynapseListParams = function(mapname)
 	}	
     };
 }
+
+ImporterApp.prototype.SynapseViewer = function(db,cell,synContin)
+{
+    var self = this;
+    console.log(this)
+    var sexSelect = document.getElementById('sex-selector').value;
+    var seriesSelect = document.getElementById('series-selector').value;
+    var url = this.cfg.synapseViewer + '?cell='+cell+'&db='+db+
+	    '&continNum='+synContin;
+    console.log(url);
+    wwapps.loadIFrame(url,'Synapse viewer');
+}
+
+
 
 ImporterApp.prototype.SynapseFilter = function(parent){
     var self = this;

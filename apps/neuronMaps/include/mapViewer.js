@@ -281,8 +281,8 @@ MapViewer.prototype.addSynapse = function(name,synapses,sphereMaterial,synType,p
 	    self.maps[name].synObjs.push(sphere);
 	    //var url = 'http://wormwiring.org/maps/getImages.php?neuron=' +
 	    //params.neuron + '&db=' + params.db +'&continNum='+contin;
-	    var url = '../synapseViewer/?neuron=' + 
-		params.neuron + '&db=' + params.db +'&continNum='+contin;
+	    //var url = '../synapseViewer/?neuron=' + 
+	    //	params.neuron + '&db=' + params.db +'&continNum='+contin;
 	    //THREEx.Linkify(self.domEvents,sphere,url);	    
 	    
 	    var _partner = partner.split(',');
@@ -318,7 +318,7 @@ MapViewer.prototype.addSynapse = function(name,synapses,sphereMaterial,synType,p
 	    });	
 	    
 	    self.domEvents.addEventListener(sphere,'click',function(event){
-		self.menu.synClick(url,'Synapse viewer');
+		self.menu.synClick(params.db,params.neuron,contin);
 	    });	
 	    self.scene.add(sphere);
 	}());
